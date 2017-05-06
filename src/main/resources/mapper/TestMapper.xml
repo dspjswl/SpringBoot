@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper.TestMapper" >
+    <resultMap id="BaseResultMap" type="com.example.dto.Member">
+    <id column="MEMBER_ID" jdbcType="DECIMAL" property="memberId" />
+    <result column="MEMBER_TYPE" jdbcType="VARCHAR" property="memberType" />
+    <result column="MARKET_ID" jdbcType="DECIMAL" property="marketId" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    </resultMap>
+    <!--<select id="selectMemberCodeById" resultType="java.lang.String">-->
+        <!--select gender from mm_member where member_id = #{id,jdbcType=DECIMAL}-->
+    <!--</select>-->
+    <select id="selectMemberById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select * from mm_member where member_id = #{id,jdbcType=DECIMAL}
+    </select>
+</mapper>

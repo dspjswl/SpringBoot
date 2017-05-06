@@ -1,0 +1,106 @@
+2017-05-05 18:13:59.264  INFO 18188 --- [restartedMain] com.example.Application                  : Starting Application on YOS-01507302112 with PID 18188 (started by Administrator in D:\Intellj IDEA\demo2)
+2017-05-05 18:13:59.266 DEBUG 18188 --- [restartedMain] com.example.Application                  : Running with Spring Boot v1.5.3.RELEASE, Spring v4.3.8.RELEASE
+2017-05-05 18:13:59.266  INFO 18188 --- [restartedMain] com.example.Application                  : No active profile set, falling back to default profiles: default
+2017-05-05 18:14:00.242  INFO 18188 --- [restartedMain] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5b91951b: startup date [Fri May 05 18:14:00 CST 2017]; root of context hierarchy
+2017-05-05 18:14:01.542  INFO 18188 --- [restartedMain] o.s.b.f.xml.XmlBeanDefinitionReader      : Loading XML bean definitions from class path resource [applicationContext.xml]
+2017-05-05 18:14:04.431  INFO 18188 --- [restartedMain] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8080 (http)
+2017-05-05 18:14:04.444  INFO 18188 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service Tomcat
+2017-05-05 18:14:04.446  INFO 18188 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.14
+2017-05-05 18:14:04.566  INFO 18188 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2017-05-05 18:14:04.566  INFO 18188 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4330 ms
+2017-05-05 18:14:04.858  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2017-05-05 18:14:04.860  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'com.example.druid.config.DruidStatViewServlet' to [/druid/*]
+2017-05-05 18:14:04.865  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2017-05-05 18:14:04.865  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2017-05-05 18:14:04.865  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2017-05-05 18:14:04.865  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2017-05-05 18:14:04.866  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'druidWebStatFilter' to urls: [/*]
+2017-05-05 18:14:04.936  WARN 18188 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static final org.slf4j.Logger com.example.service.impl.TestService.logger
+2017-05-05 18:14:06.261  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5b91951b: startup date [Fri May 05 18:14:00 CST 2017]; root of context hierarchy
+2017-05-05 18:14:06.357  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/hello]}" onto public java.lang.String com.example.controller.HelloController.welcome(org.springframework.ui.ModelMap)
+2017-05-05 18:14:06.362  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test]}" onto public java.util.HashMap<java.lang.String, java.lang.Object> com.example.controller.TestController.index()
+2017-05-05 18:14:06.363  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper2]}" onto public com.example.dto.Member com.example.controller.TestController.testMapper2(java.lang.Long)
+2017-05-05 18:14:06.364  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper]}" onto public java.lang.String com.example.controller.TestController.testMapper(java.lang.Long)
+2017-05-05 18:14:06.364  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper3]}" onto public java.util.List<com.example.dto.Member> com.example.controller.TestController.testMapper3()
+2017-05-05 18:14:06.370  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2017-05-05 18:14:06.371  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2017-05-05 18:14:06.542  INFO 18188 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-05 18:14:06.543  INFO 18188 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-05 18:14:06.635  INFO 18188 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-05 18:14:06.699  WARN 18188 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2017-05-05 18:14:07.818  INFO 18188 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2017-05-05 18:14:08.040  INFO 18188 --- [restartedMain] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2017-05-05 18:14:08.041  INFO 18188 --- [restartedMain] o.s.j.e.a.AnnotationMBeanExporter        : Bean with name 'druidDataSource' has been autodetected for JMX exposure
+2017-05-05 18:14:08.051  INFO 18188 --- [restartedMain] o.s.j.e.a.AnnotationMBeanExporter        : Located MBean 'druidDataSource': registering with JMX server as MBean [com.alibaba.druid.pool:name=druidDataSource,type=DruidDataSource]
+2017-05-05 18:14:08.138  INFO 18188 --- [restartedMain] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2017-05-05 18:14:08.145  INFO 18188 --- [restartedMain] com.example.Application                  : Started Application in 9.42 seconds (JVM running for 10.534)
+2017-05-05 18:14:48.533  INFO 18188 --- [Thread-7] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5b91951b: startup date [Fri May 05 18:14:00 CST 2017]; root of context hierarchy
+2017-05-05 18:14:48.535  INFO 18188 --- [Thread-7] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2017-05-05 18:14:48.537  INFO 18188 --- [Thread-7] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans
+2017-05-05 18:14:51.415  INFO 18188 --- [restartedMain] com.example.Application                  : Starting Application on YOS-01507302112 with PID 18188 (started by Administrator in D:\Intellj IDEA\demo2)
+2017-05-05 18:14:51.416 DEBUG 18188 --- [restartedMain] com.example.Application                  : Running with Spring Boot v1.5.3.RELEASE, Spring v4.3.8.RELEASE
+2017-05-05 18:14:51.416  INFO 18188 --- [restartedMain] com.example.Application                  : No active profile set, falling back to default profiles: default
+2017-05-05 18:14:51.423  INFO 18188 --- [restartedMain] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@6bd22a55: startup date [Fri May 05 18:14:51 CST 2017]; root of context hierarchy
+2017-05-05 18:14:52.335  INFO 18188 --- [restartedMain] o.s.b.f.xml.XmlBeanDefinitionReader      : Loading XML bean definitions from class path resource [applicationContext.xml]
+2017-05-05 18:14:52.711  INFO 18188 --- [restartedMain] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8080 (http)
+2017-05-05 18:14:52.712  INFO 18188 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service Tomcat
+2017-05-05 18:14:52.712  INFO 18188 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.14
+2017-05-05 18:14:52.740  INFO 18188 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2017-05-05 18:14:52.741  INFO 18188 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1318 ms
+2017-05-05 18:14:52.845  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2017-05-05 18:14:52.846  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'com.example.druid.config.DruidStatViewServlet' to [/druid/*]
+2017-05-05 18:14:52.847  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2017-05-05 18:14:52.847  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2017-05-05 18:14:52.847  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2017-05-05 18:14:52.848  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2017-05-05 18:14:52.848  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'druidWebStatFilter' to urls: [/*]
+2017-05-05 18:14:53.495  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@6bd22a55: startup date [Fri May 05 18:14:51 CST 2017]; root of context hierarchy
+2017-05-05 18:14:53.511  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/hello]}" onto public java.lang.String com.example.controller.HelloController.welcome(org.springframework.ui.ModelMap)
+2017-05-05 18:14:53.512  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test]}" onto public java.util.HashMap<java.lang.String, java.lang.Object> com.example.controller.TestController.index()
+2017-05-05 18:14:53.512  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper2]}" onto public com.example.dto.Member com.example.controller.TestController.testMapper2(java.lang.Long)
+2017-05-05 18:14:53.513  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper]}" onto public java.lang.String com.example.controller.TestController.testMapper(java.lang.Long)
+2017-05-05 18:14:53.513  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper3]}" onto public java.util.List<com.example.dto.Member> com.example.controller.TestController.testMapper3()
+2017-05-05 18:14:53.516  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2017-05-05 18:14:53.518  INFO 18188 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2017-05-05 18:14:53.533  INFO 18188 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-05 18:14:53.533  INFO 18188 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-05 18:14:53.557  INFO 18188 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-05 18:14:53.581  WARN 18188 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2017-05-05 18:14:53.844  INFO 18188 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2017-05-05 18:14:54.158  INFO 18188 --- [restartedMain] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2017-05-05 18:14:54.159  INFO 18188 --- [restartedMain] o.s.j.e.a.AnnotationMBeanExporter        : Bean with name 'druidDataSource' has been autodetected for JMX exposure
+2017-05-05 18:14:54.164  INFO 18188 --- [restartedMain] o.s.j.e.a.AnnotationMBeanExporter        : Located MBean 'druidDataSource': registering with JMX server as MBean [com.alibaba.druid.pool:name=druidDataSource,type=DruidDataSource]
+2017-05-05 18:14:54.184  INFO 18188 --- [restartedMain] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2017-05-05 18:14:54.188  INFO 18188 --- [restartedMain] com.example.Application                  : Started Application in 2.936 seconds (JVM running for 56.577)
+2017-05-05 18:15:25.754  INFO 18188 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2017-05-05 18:15:25.754  INFO 18188 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2017-05-05 18:15:25.790  INFO 18188 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 36 ms
+2017-05-05 18:15:26.201  INFO 18188 --- [http-nio-8080-exec-1] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2017-05-05 18:15:26.207 DEBUG 18188 --- [http-nio-8080-exec-1] c.e.m.TestMapper.selectByPrimaryKey      : ==>  Preparing: SELECT member_id,member_type,market_id,status,br_number,dob FROM mm_member WHERE member_id = ? 
+2017-05-05 18:15:26.386 DEBUG 18188 --- [http-nio-8080-exec-1] c.e.m.TestMapper.selectByPrimaryKey      : ==> Parameters: 1(Long)
+2017-05-05 18:15:26.421 DEBUG 18188 --- [http-nio-8080-exec-1] c.e.m.TestMapper.selectByPrimaryKey      : <==      Total: 1
+2017-05-05 18:15:37.170 DEBUG 18188 --- [http-nio-8080-exec-1] c.e.m.TestMapper.selectByPrimaryKey      : ==>  Preparing: SELECT member_id,member_type,market_id,status,br_number,dob FROM mm_member WHERE member_id = ? 
+2017-05-05 18:15:37.172 DEBUG 18188 --- [http-nio-8080-exec-1] c.e.m.TestMapper.selectByPrimaryKey      : ==> Parameters: 1(Long)
+2017-05-05 18:15:37.174 DEBUG 18188 --- [http-nio-8080-exec-1] c.e.m.TestMapper.selectByPrimaryKey      : <==      Total: 1
+2017-05-05 18:16:46.045 DEBUG 18188 --- [http-nio-8080-exec-10] c.e.m.TestMapper.selectByPrimaryKey      : ==>  Preparing: SELECT member_id,member_type,market_id,status,br_number,dob FROM mm_member WHERE member_id = ? 
+2017-05-05 18:16:46.049 DEBUG 18188 --- [http-nio-8080-exec-10] c.e.m.TestMapper.selectByPrimaryKey      : ==> Parameters: 1(Long)
+2017-05-05 18:16:46.052 DEBUG 18188 --- [http-nio-8080-exec-10] c.e.m.TestMapper.selectByPrimaryKey      : <==      Total: 1
+2017-05-06 21:33:41.749  INFO 15208 --- [main] com.example.ApplicationTests             : Starting ApplicationTests on DESKTOP-SEG86C9 with PID 15208 (started by ÁÖÓîºã in D:\Intellij IDEA\demo2)
+2017-05-06 21:33:41.790 DEBUG 15208 --- [main] com.example.ApplicationTests             : Running with Spring Boot v1.5.3.RELEASE, Spring v4.3.8.RELEASE
+2017-05-06 21:33:41.790  INFO 15208 --- [main] com.example.ApplicationTests             : No active profile set, falling back to default profiles: default
+2017-05-06 21:33:42.159  INFO 15208 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@17497425: startup date [Sat May 06 21:33:42 CST 2017]; root of context hierarchy
+2017-05-06 21:33:42.950  INFO 15208 --- [main] o.s.b.f.xml.XmlBeanDefinitionReader      : Loading XML bean definitions from class path resource [applicationContext.xml]
+2017-05-06 21:33:45.661  INFO 15208 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@17497425: startup date [Sat May 06 21:33:42 CST 2017]; root of context hierarchy
+2017-05-06 21:33:45.750  INFO 15208 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/hello]}" onto public java.lang.String com.example.controller.HelloController.welcome(org.springframework.ui.ModelMap)
+2017-05-06 21:33:45.752  INFO 15208 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test]}" onto public java.util.HashMap<java.lang.String, java.lang.Object> com.example.controller.TestController.index()
+2017-05-06 21:33:45.753  INFO 15208 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper2]}" onto public com.example.dto.Member com.example.controller.TestController.testMapper2(java.lang.Long)
+2017-05-06 21:33:45.753  INFO 15208 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper3]}" onto public java.util.List<com.example.dto.Member> com.example.controller.TestController.testMapper3()
+2017-05-06 21:33:45.753  INFO 15208 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/testMapper]}" onto public java.lang.String com.example.controller.TestController.testMapper(java.lang.Long)
+2017-05-06 21:33:45.755  INFO 15208 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2017-05-06 21:33:45.756  INFO 15208 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2017-05-06 21:33:45.791  INFO 15208 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-06 21:33:45.791  INFO 15208 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-06 21:33:45.841  INFO 15208 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-06 21:33:45.939  WARN 15208 --- [main] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][main] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2017-05-06 21:33:46.940  INFO 15208 --- [main] com.example.ApplicationTests             : Started ApplicationTests in 5.611 seconds (JVM running for 6.544)
+2017-05-06 21:33:47.097  INFO 15208 --- [Thread-4] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@17497425: startup date [Sat May 06 21:33:42 CST 2017]; root of context hierarchy

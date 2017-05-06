@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<h1 th:inline="text">Hello.v.2</h1>
+<p th:text="${basePath1}">1</p>
+<p th:text="&{basePath1}">2</p>
+<p th:text="#{basePath1}">3</p>
+<span th:text="${#locale.country}">US</span>
+</body>
+
+</html>
