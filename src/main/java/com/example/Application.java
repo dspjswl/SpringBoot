@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ImportResource;
 @MapperScan(basePackages = "com.example.mapper")
 @ServletComponentScan
 public class Application {
-
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}

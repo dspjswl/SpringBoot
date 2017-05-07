@@ -9,7 +9,7 @@
 2017-05-05 18:14:04.566  INFO 18188 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
 2017-05-05 18:14:04.566  INFO 18188 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4330 ms
 2017-05-05 18:14:04.858  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
-2017-05-05 18:14:04.860  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'com.example.druid.config.DruidStatViewServlet' to [/druid/*]
+2017-05-05 18:14:04.860  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'com.example.config.druid.DruidStatViewServlet' to [/druid/*]
 2017-05-05 18:14:04.865  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
 2017-05-05 18:14:04.865  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
 2017-05-05 18:14:04.865  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
@@ -48,7 +48,7 @@
 2017-05-05 18:14:52.740  INFO 18188 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
 2017-05-05 18:14:52.741  INFO 18188 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1318 ms
 2017-05-05 18:14:52.845  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
-2017-05-05 18:14:52.846  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'com.example.druid.config.DruidStatViewServlet' to [/druid/*]
+2017-05-05 18:14:52.846  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'com.example.config.druid.DruidStatViewServlet' to [/druid/*]
 2017-05-05 18:14:52.847  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
 2017-05-05 18:14:52.847  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
 2017-05-05 18:14:52.847  INFO 18188 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
@@ -85,7 +85,7 @@
 2017-05-05 18:16:46.045 DEBUG 18188 --- [http-nio-8080-exec-10] c.e.m.TestMapper.selectByPrimaryKey      : ==>  Preparing: SELECT member_id,member_type,market_id,status,br_number,dob FROM mm_member WHERE member_id = ? 
 2017-05-05 18:16:46.049 DEBUG 18188 --- [http-nio-8080-exec-10] c.e.m.TestMapper.selectByPrimaryKey      : ==> Parameters: 1(Long)
 2017-05-05 18:16:46.052 DEBUG 18188 --- [http-nio-8080-exec-10] c.e.m.TestMapper.selectByPrimaryKey      : <==      Total: 1
-2017-05-06 21:33:41.749  INFO 15208 --- [main] com.example.ApplicationTests             : Starting ApplicationTests on DESKTOP-SEG86C9 with PID 15208 (started by ÁÖÓîºã in D:\Intellij IDEA\demo2)
+2017-05-06 21:33:41.749  INFO 15208 --- [main] com.example.ApplicationTests             : Starting ApplicationTests on DESKTOP-SEG86C9 with PID 15208 (started by ï¿½ï¿½ï¿½ï¿½ï¿½ in D:\Intellij IDEA\demo2)
 2017-05-06 21:33:41.790 DEBUG 15208 --- [main] com.example.ApplicationTests             : Running with Spring Boot v1.5.3.RELEASE, Spring v4.3.8.RELEASE
 2017-05-06 21:33:41.790  INFO 15208 --- [main] com.example.ApplicationTests             : No active profile set, falling back to default profiles: default
 2017-05-06 21:33:42.159  INFO 15208 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@17497425: startup date [Sat May 06 21:33:42 CST 2017]; root of context hierarchy
