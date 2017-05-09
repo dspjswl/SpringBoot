@@ -11,6 +11,10 @@
     <name>demo</name>
     <description>Demo project for Spring Boot</description>
 
+    <!-- spring boot 父节点依赖,
+       引入这个之后相关的引入就不需要添加version配置，
+        spring boot会自动选择最合适的版本进行添加。
+    -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -91,6 +95,29 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.1.0</version>
         </dependency>
+        <!--amqp-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <!--
+                   包含支持UI模版（Velocity，FreeMarker，JasperReports），
+                   邮件服务，
+                   脚本服务(JRuby)，
+                   缓存Cache（EHCache），
+                   任务计划Scheduling（uartz）。
+                -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <!-- 添加redis支持-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+            <version>1.4.6.RELEASE</version>
+        </dependency>
+
         <!--增加eureka-server的依赖-->
         <!--<dependency>-->
             <!--<groupId>org.springframework.cloud</groupId>-->

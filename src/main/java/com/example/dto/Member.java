@@ -1,11 +1,10 @@
 package com.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -14,7 +13,8 @@ import java.sql.Date;
  * Date : 2017/5/5
  */
 @Table(name = "mm_member")
-public class Member {
+public class Member implements Serializable{
+    private static final long serialVersionUID = -1L;
     @Id
     private Long memberId;
     private String memberType;
@@ -24,7 +24,6 @@ public class Member {
     @Transient //该注解将忽略字段和属性,不用持久化到数据库
     private String aa;
     @Column(name = "dob")
-    @JsonFormat(pattern = "yyyyMMdd HH:mm:ss")
     private Date bb;
 
     public Long getMemberId() {
