@@ -1482,7 +1482,7 @@
             outdent: 'Outdent',
             createLink: 'Insert hyperlink',
             unlink: 'Remove hyperlink',
-            insertImage: 'Insert image',
+            insertImage: 'Insert images',
             insertFile: 'Insert file',
             insertHtml: 'Insert HTML',
             viewHtml: 'View HTML',
@@ -2412,7 +2412,7 @@
                 }
             };
         }
-        var whitespace = /^\s+$/, emptyspace = /^[\n\r\t]+$/, rgb = /rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i, bom = /\ufeff/g, whitespaceOrBom = /^(\s+|\ufeff)$/, persistedScrollTop, cssAttributes = ('color,padding-left,padding-right,padding-top,padding-bottom,' + 'background-color,background-attachment,background-image,background-position,background-repeat,' + 'border-top-style,border-top-width,border-top-color,' + 'border-bottom-style,border-bottom-width,border-bottom-color,' + 'border-left-style,border-left-width,border-left-color,' + 'border-right-style,border-right-width,border-right-color,' + 'font-family,font-size,font-style,font-variant,font-weight,line-height').split(','), htmlRe = /[<>\&]/g, entityRe = /[\u00A0-\u2666<>\&]/g, entityTable = {
+        var whitespace = /^\s+$/, emptyspace = /^[\n\r\t]+$/, rgb = /rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i, bom = /\ufeff/g, whitespaceOrBom = /^(\s+|\ufeff)$/, persistedScrollTop, cssAttributes = ('color,padding-left,padding-right,padding-top,padding-bottom,' + 'background-color,background-attachment,background-images,background-position,background-repeat,' + 'border-top-style,border-top-width,border-top-color,' + 'border-bottom-style,border-bottom-width,border-bottom-color,' + 'border-left-style,border-left-width,border-left-color,' + 'border-right-style,border-right-width,border-right-color,' + 'font-family,font-size,font-style,font-variant,font-weight,line-height').split(','), htmlRe = /[<>\&]/g, entityRe = /[\u00A0-\u2666<>\&]/g, entityTable = {
                 34: 'quot',
                 38: 'amp',
                 39: 'apos',
@@ -7901,13 +7901,13 @@
     (a3 || a2)();
 }));
 (function (f, define) {
-    define('editor/image', [
+    define('editor/images', [
         'kendo.imagebrowser',
         'editor/link'
     ], f);
 }(function () {
     (function ($, undefined) {
-        var kendo = window.kendo, extend = $.extend, Editor = kendo.ui.editor, EditorUtils = Editor.EditorUtils, dom = Editor.Dom, registerTool = EditorUtils.registerTool, ToolTemplate = Editor.ToolTemplate, RangeUtils = Editor.RangeUtils, Command = Editor.Command, keys = kendo.keys, KEDITORIMAGEURL = '#k-editor-image-url', KEDITORIMAGETITLE = '#k-editor-image-title', KEDITORIMAGEWIDTH = '#k-editor-image-width', KEDITORIMAGEHEIGHT = '#k-editor-image-height';
+        var kendo = window.kendo, extend = $.extend, Editor = kendo.ui.editor, EditorUtils = Editor.EditorUtils, dom = Editor.Dom, registerTool = EditorUtils.registerTool, ToolTemplate = Editor.ToolTemplate, RangeUtils = Editor.RangeUtils, Command = Editor.Command, keys = kendo.keys, KEDITORIMAGEURL = '#k-editor-image-url', KEDITORIMAGETITLE = '#k-editor-image-title', KEDITORIMAGEWIDTH = '#k-editor-images-width', KEDITORIMAGEHEIGHT = '#k-editor-images-height';
         var ImageCommand = Command.extend({
             init: function (options) {
                 var that = this;
@@ -7952,7 +7952,7 @@
                 return false;
             },
             _dialogTemplate: function (showBrowser) {
-                return kendo.template('<div class="k-editor-dialog k-popup-edit-form k-edit-form-container">' + '# if (showBrowser) { #' + '<div class="k-filebrowser k-imagebrowser"></div>' + '# } #' + '<div class=\'k-edit-label\'>' + '<label for="k-editor-image-url">#: messages.imageWebAddress #</label>' + '</div>' + '<div class=\'k-edit-field\'>' + '<input type="text" class="k-input k-textbox" id="k-editor-image-url">' + '</div>' + '<div class=\'k-edit-label\'>' + '<label for="k-editor-image-title">#: messages.imageAltText #</label>' + '</div>' + '<div class=\'k-edit-field\'>' + '<input type="text" class="k-input k-textbox" id="k-editor-image-title">' + '</div>' + '<div class=\'k-edit-label\'>' + '<label for="k-editor-image-width">#: messages.imageWidth #</label>' + '</div>' + '<div class=\'k-edit-field\'>' + '<input type="text" class="k-input k-textbox" id="k-editor-image-width">' + '</div>' + '<div class=\'k-edit-label\'>' + '<label for="k-editor-image-height">#: messages.imageHeight #</label>' + '</div>' + '<div class=\'k-edit-field\'>' + '<input type="text" class="k-input k-textbox" id="k-editor-image-height">' + '</div>' + '<div class="k-edit-buttons k-state-default">' + '<button class="k-dialog-insert k-button k-primary">#: messages.dialogInsert #</button>' + '<button class="k-dialog-close k-button">#: messages.dialogCancel #</button>' + '</div>' + '</div>')({
+                return kendo.template('<div class="k-editor-dialog k-popup-edit-form k-edit-form-container">' + '# if (showBrowser) { #' + '<div class="k-filebrowser k-imagebrowser"></div>' + '# } #' + '<div class=\'k-edit-label\'>' + '<label for="k-editor-image-url">#: messages.imageWebAddress #</label>' + '</div>' + '<div class=\'k-edit-field\'>' + '<input type="text" class="k-input k-textbox" id="k-editor-image-url">' + '</div>' + '<div class=\'k-edit-label\'>' + '<label for="k-editor-images-title">#: messages.imageAltText #</label>' + '</div>' + '<div class=\'k-edit-field\'>' + '<input type="text" class="k-input k-textbox" id="k-editor-images-title">' + '</div>' + '<div class=\'k-edit-label\'>' + '<label for="k-editor-images-width">#: messages.imageWidth #</label>' + '</div>' + '<div class=\'k-edit-field\'>' + '<input type="text" class="k-input k-textbox" id="k-editor-images-width">' + '</div>' + '<div class=\'k-edit-label\'>' + '<label for="k-editor-image-height">#: messages.imageHeight #</label>' + '</div>' + '<div class=\'k-edit-field\'>' + '<input type="text" class="k-input k-textbox" id="k-editor-image-height">' + '</div>' + '<div class="k-edit-buttons k-state-default">' + '<button class="k-dialog-insert k-button k-primary">#: messages.dialogInsert #</button>' + '<button class="k-dialog-close k-button">#: messages.dialogCancel #</button>' + '</div>' + '</div>')({
                     messages: this.editor.options.messages,
                     showBrowser: showBrowser
                 });
@@ -8034,7 +8034,7 @@
     (a3 || a2)();
 }));
 (function (f, define) {
-    define('editor/components', ['editor/image'], f);
+    define('editor/components', ['editor/images'], f);
 }(function () {
     (function ($, undefined) {
         var kendo = window.kendo, DropDownList = kendo.ui.DropDownList, dom = kendo.ui.editor.Dom;
@@ -9653,7 +9653,7 @@
         'editor/lists',
         'editor/link',
         'editor/file',
-        'editor/image',
+        'editor/images',
         'editor/components',
         'editor/indent',
         'editor/viewhtml',

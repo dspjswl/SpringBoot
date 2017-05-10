@@ -14802,7 +14802,7 @@
                 var that = this, element = that.element, options = that.options, icon = options.icon, spriteCssClass = options.spriteCssClass, imageUrl = options.imageUrl, span, img, isEmpty;
                 if (spriteCssClass || imageUrl || icon) {
                     isEmpty = true;
-                    element.contents().not('span.k-sprite').not('span.k-icon').not('img.k-image').each(function (idx, el) {
+                    element.contents().not('span.k-sprite').not('span.k-icon').not('img.k-images').each(function (idx, el) {
                         if (el.nodeType == 1 || el.nodeType == 3 && $.trim(el.nodeValue).length > 0) {
                             isEmpty = false;
                         }
@@ -14828,7 +14828,7 @@
                 } else if (imageUrl) {
                     img = element.children('img.k-image').first();
                     if (!img[0]) {
-                        img = $('<img alt="icon" class="k-image" />').prependTo(element);
+                        img = $('<img alt="icon" class="k-images" />').prependTo(element);
                     }
                     img.attr('src', imageUrl);
                 }
@@ -25169,7 +25169,7 @@
         depends: ['popup']
     };
     (function ($, undefined) {
-        var kendo = window.kendo, ui = kendo.ui, activeElement = kendo._activeElement, touch = kendo.support.touch && kendo.support.mobileOS, MOUSEDOWN = 'mousedown', CLICK = 'click', extend = $.extend, proxy = $.proxy, each = $.each, template = kendo.template, keys = kendo.keys, Widget = ui.Widget, excludedNodesRegExp = /^(ul|a|div)$/i, NS = '.kendoMenu', IMG = 'img', OPEN = 'open', MENU = 'k-menu', LINK = 'k-link', LAST = 'k-last', CLOSE = 'close', TIMER = 'timer', FIRST = 'k-first', IMAGE = 'k-image', SELECT = 'select', ZINDEX = 'zIndex', ACTIVATE = 'activate', DEACTIVATE = 'deactivate', POINTERDOWN = 'touchstart' + NS + ' MSPointerDown' + NS + ' pointerdown' + NS, pointers = kendo.support.pointers, msPointers = kendo.support.msPointers, allPointers = msPointers || pointers, MOUSEENTER = pointers ? 'pointerover' : msPointers ? 'MSPointerOver' : 'mouseenter', MOUSELEAVE = pointers ? 'pointerout' : msPointers ? 'MSPointerOut' : 'mouseleave', mobile = touch || allPointers, DOCUMENT_ELEMENT = $(document.documentElement), KENDOPOPUP = 'kendoPopup', DEFAULTSTATE = 'k-state-default', HOVERSTATE = 'k-state-hover', FOCUSEDSTATE = 'k-state-focused', DISABLEDSTATE = 'k-state-disabled', SELECTEDSTATE = 'k-state-selected', menuSelector = '.k-menu', groupSelector = '.k-menu-group', popupSelector = groupSelector + ',.k-animation-container', allItemsSelector = ':not(.k-list) > .k-item', disabledSelector = '.k-item.k-state-disabled', itemSelector = '.k-item:not(.k-state-disabled)', linkSelector = '.k-item:not(.k-state-disabled) > .k-link', exclusionSelector = ':not(.k-item.k-separator)', nextSelector = exclusionSelector + ':eq(0)', lastSelector = exclusionSelector + ':last', templateSelector = '> div:not(.k-animation-container,.k-list-container)', touchPointerTypes = {
+        var kendo = window.kendo, ui = kendo.ui, activeElement = kendo._activeElement, touch = kendo.support.touch && kendo.support.mobileOS, MOUSEDOWN = 'mousedown', CLICK = 'click', extend = $.extend, proxy = $.proxy, each = $.each, template = kendo.template, keys = kendo.keys, Widget = ui.Widget, excludedNodesRegExp = /^(ul|a|div)$/i, NS = '.kendoMenu', IMG = 'img', OPEN = 'open', MENU = 'k-menu', LINK = 'k-link', LAST = 'k-last', CLOSE = 'close', TIMER = 'timer', FIRST = 'k-first', IMAGE = 'k-images', SELECT = 'select', ZINDEX = 'zIndex', ACTIVATE = 'activate', DEACTIVATE = 'deactivate', POINTERDOWN = 'touchstart' + NS + ' MSPointerDown' + NS + ' pointerdown' + NS, pointers = kendo.support.pointers, msPointers = kendo.support.msPointers, allPointers = msPointers || pointers, MOUSEENTER = pointers ? 'pointerover' : msPointers ? 'MSPointerOver' : 'mouseenter', MOUSELEAVE = pointers ? 'pointerout' : msPointers ? 'MSPointerOut' : 'mouseleave', mobile = touch || allPointers, DOCUMENT_ELEMENT = $(document.documentElement), KENDOPOPUP = 'kendoPopup', DEFAULTSTATE = 'k-state-default', HOVERSTATE = 'k-state-hover', FOCUSEDSTATE = 'k-state-focused', DISABLEDSTATE = 'k-state-disabled', SELECTEDSTATE = 'k-state-selected', menuSelector = '.k-menu', groupSelector = '.k-menu-group', popupSelector = groupSelector + ',.k-animation-container', allItemsSelector = ':not(.k-list) > .k-item', disabledSelector = '.k-item.k-state-disabled', itemSelector = '.k-item:not(.k-state-disabled)', linkSelector = '.k-item:not(.k-state-disabled) > .k-link', exclusionSelector = ':not(.k-item.k-separator)', nextSelector = exclusionSelector + ':eq(0)', lastSelector = exclusionSelector + ':last', templateSelector = '> div:not(.k-animation-container,.k-list-container)', touchPointerTypes = {
                 '2': 1,
                 'touch': 1
             }, templates = {
@@ -34057,7 +34057,7 @@
         function exportSVG(group, options) {
             var svg = exportGroup(group);
             if (!options || !options.raw) {
-                svg = 'data:image/svg+xml;base64,' + util.encodeBase64(svg);
+                svg = 'data:images/svg+xml;base64,' + util.encodeBase64(svg);
             }
             return $.Deferred().resolve(svg).promise();
         }
@@ -37117,7 +37117,7 @@
             var dir = getPropertyValue(style, 'direction');
             var backgroundColor = getPropertyValue(style, 'background-color');
             backgroundColor = parseColor(backgroundColor);
-            var backgroundImage = parseBackgroundImage(getPropertyValue(style, 'background-image'));
+            var backgroundImage = parseBackgroundImage(getPropertyValue(style, 'background-images'));
             var backgroundRepeat = splitProperty(getPropertyValue(style, 'background-repeat'));
             var backgroundPosition = splitProperty(getPropertyValue(style, 'background-position'));
             var backgroundOrigin = splitProperty(getPropertyValue(style, 'background-origin'));
@@ -37882,7 +37882,7 @@
                 break;
             case 'canvas':
                 try {
-                    renderImage(element, element.toDataURL('image/png'), group);
+                    renderImage(element, element.toDataURL('images/png'), group);
                 } catch (ex) {
                 }
                 break;
@@ -54913,7 +54913,7 @@
         depends: ['core']
     };
     (function ($, undefined) {
-        var kendo = window.kendo, ui = kendo.ui, keys = kendo.keys, extend = $.extend, each = $.each, template = kendo.template, Widget = ui.Widget, excludedNodesRegExp = /^(ul|a|div)$/i, NS = '.kendoPanelBar', IMG = 'img', HREF = 'href', LAST = 'k-last', LINK = 'k-link', LINKSELECTOR = '.' + LINK, ERROR = 'error', ITEM = '.k-item', GROUP = '.k-group', VISIBLEGROUP = GROUP + ':visible', IMAGE = 'k-image', FIRST = 'k-first', EXPAND = 'expand', SELECT = 'select', CONTENT = 'k-content', ACTIVATE = 'activate', COLLAPSE = 'collapse', MOUSEENTER = 'mouseenter', MOUSELEAVE = 'mouseleave', CONTENTLOAD = 'contentLoad', ACTIVECLASS = 'k-state-active', GROUPS = '> .k-panel', CONTENTS = '> .k-content', FOCUSEDCLASS = 'k-state-focused', DISABLEDCLASS = 'k-state-disabled', SELECTEDCLASS = 'k-state-selected', SELECTEDSELECTOR = '.' + SELECTEDCLASS, HIGHLIGHTCLASS = 'k-state-highlight', ACTIVEITEMSELECTOR = ITEM + ':not(.k-state-disabled)', clickableItems = '> ' + ACTIVEITEMSELECTOR + ' > ' + LINKSELECTOR + ', .k-panel > ' + ACTIVEITEMSELECTOR + ' > ' + LINKSELECTOR, disabledItems = ITEM + '.k-state-disabled > .k-link', selectableItems = '> li > ' + SELECTEDSELECTOR + ', .k-panel > li > ' + SELECTEDSELECTOR, defaultState = 'k-state-default', ARIA_DISABLED = 'aria-disabled', ARIA_EXPANDED = 'aria-expanded', ARIA_HIDDEN = 'aria-hidden', ARIA_SELECTED = 'aria-selected', VISIBLE = ':visible', EMPTY = ':empty', SINGLE = 'single', templates = {
+        var kendo = window.kendo, ui = kendo.ui, keys = kendo.keys, extend = $.extend, each = $.each, template = kendo.template, Widget = ui.Widget, excludedNodesRegExp = /^(ul|a|div)$/i, NS = '.kendoPanelBar', IMG = 'img', HREF = 'href', LAST = 'k-last', LINK = 'k-link', LINKSELECTOR = '.' + LINK, ERROR = 'error', ITEM = '.k-item', GROUP = '.k-group', VISIBLEGROUP = GROUP + ':visible', IMAGE = 'k-images', FIRST = 'k-first', EXPAND = 'expand', SELECT = 'select', CONTENT = 'k-content', ACTIVATE = 'activate', COLLAPSE = 'collapse', MOUSEENTER = 'mouseenter', MOUSELEAVE = 'mouseleave', CONTENTLOAD = 'contentLoad', ACTIVECLASS = 'k-state-active', GROUPS = '> .k-panel', CONTENTS = '> .k-content', FOCUSEDCLASS = 'k-state-focused', DISABLEDCLASS = 'k-state-disabled', SELECTEDCLASS = 'k-state-selected', SELECTEDSELECTOR = '.' + SELECTEDCLASS, HIGHLIGHTCLASS = 'k-state-highlight', ACTIVEITEMSELECTOR = ITEM + ':not(.k-state-disabled)', clickableItems = '> ' + ACTIVEITEMSELECTOR + ' > ' + LINKSELECTOR + ', .k-panel > ' + ACTIVEITEMSELECTOR + ' > ' + LINKSELECTOR, disabledItems = ITEM + '.k-state-disabled > .k-link', selectableItems = '> li > ' + SELECTEDSELECTOR + ', .k-panel > li > ' + SELECTEDSELECTOR, defaultState = 'k-state-default', ARIA_DISABLED = 'aria-disabled', ARIA_EXPANDED = 'aria-expanded', ARIA_HIDDEN = 'aria-hidden', ARIA_SELECTED = 'aria-selected', VISIBLE = ':visible', EMPTY = ':empty', SINGLE = 'single', templates = {
                 content: template('<div role=\'region\' class=\'k-content\'#= contentAttributes(data) #>#= content(item) #</div>'),
                 group: template('<ul role=\'group\' aria-hidden=\'true\' class=\'#= groupCssClass(group) #\'#= groupAttributes(group) #>' + '#= renderItems(data) #' + '</ul>'),
                 itemWrapper: template('<#= tag(item) # class=\'#= textClass(item, group) #\' #= contentUrl(item) ##= textAttributes(item) #>' + '#= image(item) ##= sprite(item) ##= text(item) #' + '#= arrow(data) #' + '</#= tag(item) #>'),
@@ -55791,9 +55791,9 @@
     (function ($, undefined) {
         var kendo = window.kendo, ui = kendo.ui, keys = kendo.keys, map = $.map, each = $.each, trim = $.trim, extend = $.extend, template = kendo.template, outerWidth = kendo._outerWidth, outerHeight = kendo._outerHeight, Widget = ui.Widget, excludedNodesRegExp = /^(a|div)$/i, NS = '.kendoTabStrip', IMG = 'img', HREF = 'href', PREV = 'prev', SHOW = 'show', LINK = 'k-link', LAST = 'k-last', CLICK = 'click', ERROR = 'error', EMPTY = ':empty', IMAGE = 'k-image', FIRST = 'k-first', SELECT = 'select', ACTIVATE = 'activate', CONTENT = 'k-content', CONTENTURL = 'contentUrl', MOUSEENTER = 'mouseenter', MOUSELEAVE = 'mouseleave', CONTENTLOAD = 'contentLoad', DISABLEDSTATE = 'k-state-disabled', DEFAULTSTATE = 'k-state-default', ACTIVESTATE = 'k-state-active', FOCUSEDSTATE = 'k-state-focused', HOVERSTATE = 'k-state-hover', TABONTOP = 'k-tab-on-top', NAVIGATABLEITEMS = '.k-item:not(.' + DISABLEDSTATE + ')', HOVERABLEITEMS = '.k-tabstrip-items > ' + NAVIGATABLEITEMS + ':not(.' + ACTIVESTATE + ')', templates = {
                 content: template('<div class=\'k-content\'#= contentAttributes(data) # role=\'tabpanel\'>#= content(item) #</div>'),
-                itemWrapper: template('<#= tag(item) # class=\'k-link\'#= contentUrl(item) ##= textAttributes(item) ##= iframeId(item) #>' + '#= image(item) ##= sprite(item) ##= text(item) ##= closeIcon(item) #' + '</#= tag(item) #>'),
+                itemWrapper: template('<#= tag(item) # class=\'k-link\'#= contentUrl(item) ##= textAttributes(item) ##= iframeId(item) #>' + '#= images(item) ##= sprite(item) ##= text(item) ##= closeIcon(item) #' + '</#= tag(item) #>'),
                 item: template('<li class=\'#= wrapperCssClass(group, item) #\' role=\'tab\' #=item.active ? "aria-selected=\'true\'" : \'\'#>' + '#= itemWrapper(data) #' + '</li>'),
-                image: template('<img class=\'k-image\' alt=\'\' src=\'#= imageUrl #\' />'),
+                image: template('<img class=\'k-images\' alt=\'\' src=\'#= imageUrl #\' />'),
                 sprite: template('<span class=\'k-sprite #= spriteCssClass #\'></span>'),
                 empty: template('')
             }, rendering = {
@@ -57639,7 +57639,7 @@
                 var element = this.element, icon = this.options.icon, spriteCssClass = this.options.spriteCssClass, imageUrl = this.options.imageUrl, isEmpty, span, img;
                 if (spriteCssClass || imageUrl || icon) {
                     isEmpty = true;
-                    element.contents().not('span.k-sprite,span.' + ICON + ',img.k-image').each(function (idx, el) {
+                    element.contents().not('span.k-sprite,span.' + ICON + ',img.k-images').each(function (idx, el) {
                         if (el.nodeType == 1 || el.nodeType == 3 && $.trim(el.nodeValue).length > 0) {
                             isEmpty = false;
                         }

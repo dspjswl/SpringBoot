@@ -10317,7 +10317,7 @@
             renderSource: function () {
                 return renderAllAttr(this.mapSource(true));
             },
-            template: renderTemplate('<image preserveAspectRatio=\'none\' #= d.renderStyle() # #= d.renderTransform()# #= d.renderOpacity() # ' + '#= d.renderPosition() # #= d.renderSource() # #= d.renderDefinitions()#>' + '</image>')
+            template: renderTemplate('<images preserveAspectRatio=\'none\' #= d.renderStyle() # #= d.renderTransform()# #= d.renderOpacity() # ' + '#= d.renderPosition() # #= d.renderSource() # #= d.renderDefinitions()#>' + '</images>')
         });
         var GradientStopNode = Node.extend({
             template: renderTemplate('<stop #=d.renderOffset()# #=d.renderStyle()# />'),
@@ -10521,7 +10521,7 @@
         function exportSVG(group, options) {
             var svg = exportGroup(group);
             if (!options || !options.raw) {
-                svg = 'data:image/svg+xml;base64,' + util.encodeBase64(svg);
+                svg = 'data:images/svg+xml;base64,' + util.encodeBase64(svg);
             }
             return $.Deferred().resolve(svg).promise();
         }
@@ -11060,7 +11060,7 @@
                 this.invalidate();
             },
             onError: function () {
-                this.loading.reject(new Error('Unable to load image \'' + this.img.src + '\'. Check for connectivity and verify CORS headers.'));
+                this.loading.reject(new Error('Unable to load images \'' + this.img.src + '\'. Check for connectivity and verify CORS headers.'));
             },
             drawImage: function (ctx) {
                 var rect = this.srcElement.rect();
@@ -13115,7 +13115,7 @@
                 if (/^img$/i.test(element.tagName)) {
                     add(element.src);
                 }
-                parseBackgroundImage(getPropertyValue(getComputedStyle(element), 'background-image')).forEach(function (bg) {
+                parseBackgroundImage(getPropertyValue(getComputedStyle(element), 'background-images')).forEach(function (bg) {
                     if (bg.type == 'url') {
                         add(bg.url);
                     }
@@ -14346,7 +14346,7 @@
                 break;
             case 'canvas':
                 try {
-                    renderImage(element, element.toDataURL('image/png'), group);
+                    renderImage(element, element.toDataURL('images/png'), group);
                 } catch (ex) {
                 }
                 break;
@@ -15813,7 +15813,7 @@
                 if (hasAlpha) {
                     img = new PDFRawImage(img.width, img.height, rgb, alpha);
                 } else {
-                    var data = canvas.toDataURL('image/jpeg');
+                    var data = canvas.toDataURL('images/jpeg');
                     data = data.substr(data.indexOf(';base64,') + 8);
                     var stream = BinaryStream();
                     stream.writeBase64(data);

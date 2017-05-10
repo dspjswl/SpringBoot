@@ -117,6 +117,11 @@
             <artifactId>spring-boot-starter-redis</artifactId>
             <version>1.4.6.RELEASE</version>
         </dependency>
+        <!--AOP-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
 
         <!--增加eureka-server的依赖-->
         <!--<dependency>-->
@@ -162,7 +167,7 @@
             <!--<goal>tag</goal>-->
             <!--</goals>-->
             <!--<configuration>-->
-            <!--<image>${docker.registry.name}/${project.artifactId}:${project.version}</image>-->
+            <imagesmage>${docker.registry.name}/${project.artifactId}:${project.versioimagesmage>-->
             <!--<newName>${docker.repostory}/${docker.registry.name}/${project.artifactId}:${project.version}</newName>-->
             <!--</configuration>-->
             <!--</execution>-->

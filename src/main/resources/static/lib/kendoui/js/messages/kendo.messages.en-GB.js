@@ -99,7 +99,7 @@
 										"outdent" : "Outdent",
 										"createLink" : "Insert hyperlink",
 										"unlink" : "Remove hyperlink",
-										"insertImage" : "Insert image",
+										"insertImage" : "Insert images",
 										"insertFile" : "Insert file",
 										"insertHtml" : "Insert HTML",
 										"viewHtml" : "View HTML",

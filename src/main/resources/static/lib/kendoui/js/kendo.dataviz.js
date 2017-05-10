@@ -5487,7 +5487,7 @@
             renderSource: function () {
                 return renderAllAttr(this.mapSource(true));
             },
-            template: renderTemplate('<image preserveAspectRatio=\'none\' #= d.renderStyle() # #= d.renderTransform()# #= d.renderOpacity() # ' + '#= d.renderPosition() # #= d.renderSource() # #= d.renderDefinitions()#>' + '</image>')
+            template: renderTemplate('<image preserveAspectRatio=\'none\' #= d.renderStyle() # #= d.renderTransform()# #= d.renderOpacity() # ' + '#= d.renderPosition() # #= d.renderSource() # #= d.renderDefinitions()#>' + '</images>')
         });
         var GradientStopNode = Node.extend({
             template: renderTemplate('<stop #=d.renderOffset()# #=d.renderStyle()# />'),
@@ -5691,7 +5691,7 @@
         function exportSVG(group, options) {
             var svg = exportGroup(group);
             if (!options || !options.raw) {
-                svg = 'data:image/svg+xml;base64,' + util.encodeBase64(svg);
+                svg = 'data:images/svg+xml;base64,' + util.encodeBase64(svg);
             }
             return $.Deferred().resolve(svg).promise();
         }
@@ -6230,7 +6230,7 @@
                 this.invalidate();
             },
             onError: function () {
-                this.loading.reject(new Error('Unable to load image \'' + this.img.src + '\'. Check for connectivity and verify CORS headers.'));
+                this.loading.reject(new Error('Unable to load images \'' + this.img.src + '\'. Check for connectivity and verify CORS headers.'));
             },
             drawImage: function (ctx) {
                 var rect = this.srcElement.rect();
@@ -9516,7 +9516,7 @@
                 break;
             case 'canvas':
                 try {
-                    renderImage(element, element.toDataURL('image/png'), group);
+                    renderImage(element, element.toDataURL('images/png'), group);
                 } catch (ex) {
                 }
                 break;

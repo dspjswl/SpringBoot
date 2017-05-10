@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PreDestroy;
 
 /**
- * .
+ * 容器销毁前执行类.
  * Created by yuheng.lin.
  * Date : 2017/5/9
  */
