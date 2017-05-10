@@ -167,7 +167,7 @@
             <!--<goal>tag</goal>-->
             <!--</goals>-->
             <!--<configuration>-->
-            <imagesmage>${docker.registry.name}/${project.artifactId}:${project.versioimagesmage>-->
+            <!--<imagesmage>${docker.registry.name}/${project.artifactId}:${project.versioimagesmage>-->
             <!--<newName>${docker.repostory}/${docker.registry.name}/${project.artifactId}:${project.version}</newName>-->
             <!--</configuration>-->
             <!--</execution>-->
