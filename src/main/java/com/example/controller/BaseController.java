@@ -1,10 +1,10 @@
 package com.example.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -16,10 +16,10 @@ import java.util.Date;
 public class BaseController {
 
     @RequestMapping("/hello")
-    public String welcome(ModelMap model) {
-        model.put("time", new Date());
-        model.put("hello", new Date());
-        return "template";
+    public ModelAndView welcome(ModelAndView mav) {
+        mav.addObject("time",new Date());
+        mav.setViewName("template");
+        return mav;
     }
 
     /**
@@ -27,8 +27,9 @@ public class BaseController {
      * @return
      */
     @RequestMapping("/")
-    public String index() {
-        return "index";
+    public ModelAndView index(ModelAndView mav) {
+        mav.setViewName("index");
+        return mav;
     }
 
     /**
@@ -36,7 +37,7 @@ public class BaseController {
      * @return
      */
     @RequestMapping("/**/*.html")
-    public String getBasePath() {
+    public ModelAndView getBasePath(ModelAndView mav) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String path = request.getContextPath();
@@ -46,9 +47,12 @@ public class BaseController {
         //拼接上下文
         String basePath = scheme + "://" + serverName + ":" + port + path;
         //basePath信息放入attribute中
-        request.setAttribute("basePath", basePath);
-        String requestURI = request.getRequestURI();
-        requestURI = requestURI.replace(path, "").replace(".html","");
-        return requestURI;
+        mav.addObject("basePath", basePath);
+//        request.setAttribute("basePath", basePath);
+        //貌似入参中的mav的viewName为null时会返回原来访问的html，所以可以不用下面的setViewName
+        //String requestURI = request.getRequestURI();
+        //requestURI = requestURI.replace(path, "").replace(".html","");
+        //mav.setViewName(null);
+        return mav;
     }
 }
