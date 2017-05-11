@@ -1,17 +1,190 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<!--<link rel="icon" type="image/x-icon" href="/images/favicon.ico">-->
-<head>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<head th:include="header::header">
     <meta charset="UTF-8">
     <title>首页</title>
 </head>
 <style>
-    body{
-        background:url(images/background.jpg)
+    html,body{
+        height:100%;
+        /*background:url(images/background.jpg)*/
     }
 </style>
 <body>
 <p th:text="${basePath}">123</p>
+<script>
+
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">.col-md-4</div>
+        <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
+        <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
+    </div>
+</div>
+<div id="d_um_002_form" class="container">
+</div>
+<input type="text" placeholder='...' data-bind="value:model.url" class="k-textbox">
+<div class="form-group">
+    <label class="col-sm-2 control-label">...</label>
+    <div class="col-sm-10">
+        <input type="text" class="k-textbox" data-bind="value:model.placeholder">
+    </div>
+</div>
+<select data-role="combobox" data-value-primitive="true" placeholder='...' data-text-field="meaning"
+        data-value-field="value" data-bind="source: resourceTypeData2, value: model.type">
+</select>
+<input type="text" id="role" placeholder='...' data-bind="value:model.roleId,text:model.roleName">
+<div id="test1">
+    <input data-role="numerictextbox">
+    <input data-role="datepicker">
+    <input data-role="autocomplete"
+           data-ignore-case="true"
+           data-text-field="name"
+           data-source="{data: [{name: 'John Doe'},{name: 'Jane Doe'}]}"
+           data-change="numerictextbox_change"/>
+    <input data-role="dropdownlist" data-ignore-case="true"
+           data-text-field="name"
+           data-source="{data: [{name: 'John Doe'},{name: 'Jane Doe'}]}"
+           data-select="numerictextbox_select"/>
+    <input data-role="autocomplete"
+           data-source="[{firstName:'John', lastName: 'Doe'}, {firstName:'Jane', lastName: 'Doe'}]"
+           data-text-field="firstName"
+           data-template="template"/>
+
+</div>
+<div id="grid"></div>
+<input id="view" type="text" data-bind="value: model.name"/>
+<input id="autocomplete"/>
+<input id="chart"/>
+<div id="example"></div>
+
+<script id="javascriptTemplate" type="text/x-kendo-template">
+    <ul>
+        # for (var i = 0; i < data.length; i++) { #
+        <li>#= data[i] #</li>
+        # } #
+    </ul>
+</script>
+
+<script type="text/javascript">
+    //Get the external template definition using a jQuery selector
+    var template = kendo.template($("#javascriptTemplate").html());
+
+    //Create some dummy data
+    var data = ["Todd", "Steve", "Burke"];
+
+    var result = template(data); //Execute the template
+    $("#example").html(result); //Append the result
+</script>
+<script id="template" type="text/x-kendo-template">
+    <span style="color:red">#:firstName#  #:lastName#</span>
+</script>
+<script>
+    //   $("#role").kendoDatePicker();
+    function numerictextbox_change(data) {
+        alert(data);
+    }
+    function numerictextbox_select(data) {
+        alert(data);
+    }
+    kendo.init($("#test1"));
+    //   $("#test2").kendoAutoComplete([{name: 'John Doe'},{name: 'Jane Doe'}]);
+    //   $("#role").kendoLov(${lovProvider.getLov(base.contextPath, base.locale, "LOV_ROLE")})
+    //---------------------------
+    remoteDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: '${base.contextPath}/testDataSource',
+                dataType: 'json',
+                type: "GET"
+            }
+        },
+        batch: true,
+        serverPaging: true,
+        serverSorting: true,
+        pageSize: 50,
+        schema: {
+            data: 'rows',
+            total: 'total',
+            model: {
+                id: "rows",
+                fields: {}
+            }
+        }
+    })
+    $("#grid").kendoGrid({
+        height: 200,
+        columns: [
+            {
+                field: "objectVersionNumber",
+                title: "Object Version Number"
+            },
+            {
+                field: "userName",
+                title: "User Name"
+            }
+        ],
+        dataSource: remoteDataSource,
+        pageable: true
+    });
+    //--------------
+    var viewModel = kendo.observable({
+        model: {
+            name: "John Doe"
+        }
+    });
+    kendo.bind($("#view"), viewModel);
+    //------------------
+    $("#autocomplete").kendoAutoComplete(["Apples", "Oranges", "Grapes"]);
+    var autocomplete = $("#autocomplete").data("kendoAutoComplete");
+    autocomplete.bind('change', function (e) {
+        alert(e.sender.value());
+    })
+    //------------------
+
+</script>
+
+<ul id="users"></ul>
+
+<script type="text/x-kendo-template" id="myTemplate">
+    #if(isAdmin){#
+    <li>#: name # is Admin</li>
+    #}else{#
+    <li>#: name # is User</li>
+    #}#
+</script>
+
+<script type="text/javascript">
+    var templateContent = $("#myTemplate").html();
+    var template = kendo.template(templateContent);
+
+    //Create some dummy data
+    var data = [
+        {name: "John", isAdmin: false},
+        {name: "Alex", isAdmin: true}
+    ];
+
+    var result = kendo.render(template, data); //render the template
+
+    $("#users").html(result); //append the result to the page
+</script>
+<div id="foo">
+    I will be animated
+</div>
+
+<script>
+    var fadeOut1 = kendo.fx($("#foo")).fadeOut();
+    var fadeOut2 = kendo.fx($("#foo")).fade("out");
+    var fadeOut3 = kendo.fx($("#foo")).fade().direction("out");
+</script>
 </body>
 </html>
