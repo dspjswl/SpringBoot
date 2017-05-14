@@ -1,6 +1,6 @@
 package com.example.service.impl;
 
-import com.example.dto.User;
+import com.example.dto.SysUser;
 import com.example.mapper.UserMapper;
 import com.example.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class UserService implements IUserService {
     private UserMapper userMapper;
 
     @Override
-    public User findUserByName(String username) {
+    public SysUser findUserByName(String username) {
         return userMapper.findUserByName(username);
     }
 }
