@@ -4,6 +4,8 @@ import com.example.dto.SysUser;
 import com.example.mapper.UserMapper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -38,6 +40,15 @@ public class ShiroController {
 
     @RequestMapping(value="/login",method=RequestMethod.GET)
     public String loginForm(Model model){
+//        String username = user.getUsername();
+//        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
+        //获取当前的Subject
+        Subject currentUser = SecurityUtils.getSubject();
+        //验证是否登录成功
+        if(currentUser.isAuthenticated()){
+            logger.error("用户{}已经登录",currentUser.getPrincipal().toString());
+            return "redirect:/user";
+        }
         model.addAttribute("user", new SysUser());
         return "login";
     }
@@ -101,11 +112,6 @@ public class ShiroController {
         return "redirect:/login";
     }
 
-    @RequestMapping("/403")
-    public String unauthorizedRole(){
-        logger.info("------没有权限-------");
-        return "403";
-    }
 
     @RequestMapping("/user")
     public String getUserList(Map<String, Object> model){
@@ -114,6 +120,7 @@ public class ShiroController {
     }
 
     @RequestMapping("/user/edit/{userid}")
+    @RequiresPermissions(value = "user:query",logical = Logical.AND)
     public String getUserList(@PathVariable int userid,Map<String,Object> model){
         logger.info("------进入用户信息修改-------");
         model.put("userId",userid);
@@ -122,7 +129,7 @@ public class ShiroController {
 
     @RequestMapping("/testPermission")
     @ResponseBody
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin","manager"},logical = Logical.OR)
     public String testPermission(){
         logger.info("------测试是否有权限-------");
         return "user_edit";

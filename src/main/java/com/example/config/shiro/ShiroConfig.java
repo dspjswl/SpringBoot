@@ -137,7 +137,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 登录成功后要跳转的连接
         shiroFilterFactoryBean.setSuccessUrl("/user");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error/unauthorized");
 
         loadShiroFilterChain(shiroFilterFactoryBean, userService, userMapper);
         return shiroFilterFactoryBean;

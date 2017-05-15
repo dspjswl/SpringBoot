@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<head th:include="header::header">
-    <title>用户列表</title>
-</head>
+<head th:include="header::header"></head>
 <body>
 <h1 th:text="${message}"></h1>
 <h1>用户列表--<a th:href="@{/logout}">退出登录</a>    </h1>
