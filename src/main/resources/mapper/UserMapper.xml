@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.example.dto.SysUser">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <!--<result column="STATE" jdbcType="DECIMAL" property="state" />-->
+        <collection property="roleList" resultMap="SysRoleResult">
+
+        </collection>
+    </resultMap>
+    <resultMap id="SysRoleResult" type="com.example.dto.SysRole">
+        <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+        <collection property="permissionList" resultMap="SysPermissionResult">
+
+        </collection>
+    </resultMap>
+    <resultMap id="SysPermissionResult" type="com.example.dto.SysPermission">
+        <result column="PERMISSION_NAME" jdbcType="VARCHAR" property="permissionName" />
+        <result column="ROLE_ID" jdbcType="DECIMAL" property="roleId" />
+        <!--<collection property="roleList" resultMap="com.example.dto.SysRole">-->
+
+        <!--</collection>-->
+    </resultMap>
+    <select id="findUserByName" resultMap="BaseResultMap">
+    SELECT
+        su.id,
+        su.username,
+        su.password,
+        su.state,
+        sr.role_name,
+        sp.permission_name
+    FROM
+        sys_user su,
+        sys_user_role sur,
+        sys_role sr,
+        sys_permission sp
+    WHERE
+        su.id = sur.user_id
+            AND sr.id = sur.role_id
+            AND sp.role_id = sur.role_id
+            AND su.username = #{username}
+    </select>
+</mapper>

@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.dto.User;
+import com.example.dto.SysUser;
 
 /**
  * 用户服务类.
@@ -8,5 +8,5 @@ import com.example.dto.User;
  * Date : 2017/5/11
  */
 public interface IUserService {
-    User findUserByName(String username);
+    SysUser findUserByName(String username);
 }

@@ -1,9 +1,11 @@
 package com.example.mapper;
 
-import com.example.dto.User;
+import com.example.dto.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * UserMapper.
@@ -12,6 +14,9 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM sys_user where username = #{username}")
-    User findUserByName(@Param("username") String username);
+//    @Select("SELECT * FROM sys_user where username = #{username}")
+    SysUser findUserByName(@Param("username") String username);
+
+    @Select("SELECT * FROM sys_user")
+    List<SysUser> getUserList();
 }
