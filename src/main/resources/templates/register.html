@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+ * description:注册页面.
+ * version: 1.0
+ * author: yuheng.lin
+ * Copyright.
+ *
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:include="header::header"></head>
+<style>
+    html, body {
+        /*background: !*#F04F90*! #28a4c9;*/
+        height: 50%;
+    }
+
+    .heading {
+        display: block;
+        font-size: 35px;
+        font-weight: 700;
+        padding: 35px 0;
+        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: 30px;
+        color: #28a4c9;
+        font-family: Consolas;
+        text-align: center;
+    }
+</style>
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <div class="col-md-4 column">
+                </div>
+                <div class="col-md-4 column">
+                    <form role="form" th:action="@{/register}" method="post">
+                        <span class="heading">用户注册</span>
+                        <div class="form-group">
+                            <h4 for="username">用户名</h4><input type="text" class="form-control" id="username" name="username" />
+                        </div>
+                        <div class="form-group">
+                            <h4 for="password">密码</h4><input type="password" class="form-control" id="password" name="password" />
+                        </div>
+                        <div class="form-group">
+                            <h4 for="confirmpassword">确认密码</h4><input type="password" class="form-control" id="confirmpassword" name="confirmpassword" />
+                        </div>
+                        <button type="submit" class="btn btn-default">注册</button>
+                        <a th:href="@{/login}" class="col-md-offset-8">已有账号?</a>
+                    </form>
+                    <div class="alert alert-dismissable alert-danger" th:if="${message}!=null">
+                        <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>-->
+                        <h4>
+                            <strong th:text="${message}">Warning!</strong>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-4 column">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

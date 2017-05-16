@@ -8,12 +8,14 @@ import org.apache.shiro.web.filter.mgt.FilterChainResolver;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
 import org.apache.shiro.web.mgt.WebSecurityManager;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.springframework.beans.factory.BeanInitializationException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -96,5 +98,13 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
             }
         }
 
+        //扩展ShiroFilterFactoryBean, 使用自定义的CustomShiroHttpServletResponse
+        @Override
+        protected ServletResponse wrapServletResponse(HttpServletResponse orig, ShiroHttpServletRequest request) {
+            return new CustomShiroHttpServletResponse(orig, getServletContext(), request);
+        }
+
+
     }
+
 }

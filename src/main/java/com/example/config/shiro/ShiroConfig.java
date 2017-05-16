@@ -3,6 +3,7 @@ package com.example.config.shiro;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.example.mapper.UserMapper;
 import com.example.service.impl.UserService;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -39,6 +40,7 @@ public class ShiroConfig {
     public CustomShiroRealm customShiroRealm(EhCacheManager cacheManager) {
         CustomShiroRealm realm = new CustomShiroRealm();
         realm.setCacheManager(cacheManager);
+        realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
 
@@ -87,6 +89,11 @@ public class ShiroConfig {
         return dwsm;
     }
 
+    /**
+     * 开启shiro aop注解支持,启用权限控制.
+     * @param securityManager
+     * @return
+     */
     @Bean
     public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor aasa = new AuthorizationAttributeSourceAdvisor();
@@ -104,6 +111,7 @@ public class ShiroConfig {
         /////////////////////// 下面这些规则配置最好配置到配置文件中 ///////////////////////
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // authc：该过滤器下的页面必须验证后才能访问，它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter
+        filterChainDefinitionMap.put("/register", "anon");
         filterChainDefinitionMap.put("/*", "authc");// 这里为了测试，只限制/user，实际开发中请修改为具体拦截的请求规则
         // anon：它对应的过滤器里面是空的,什么都没做
         logger.info("##################从数据库读取权限规则，加载到shiroFilter中##################");
@@ -127,7 +135,7 @@ public class ShiroConfig {
      * @author SHANHY
      * @create  2016年1月14日
      */
-    @Bean//(name = "shiroFilter")
+    @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, UserService userService, UserMapper userMapper) {
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
@@ -150,6 +158,23 @@ public class ShiroConfig {
     @Bean
     public ShiroDialect shiroDialect() {
         return new ShiroDialect();
+    }
+
+    /**
+     * 凭证匹配器
+     * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
+     *  所以我们需要修改下doGetAuthenticationInfo中的代码;
+     * ）
+     * @return
+     */
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashIterations(1);//散列的次数，比如散列两次，相当于 md5(md5(""));
+
+        return hashedCredentialsMatcher;
     }
 
 }
