@@ -68,7 +68,7 @@ public class CustomShiroRealm  extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken authenticationToken) throws AuthenticationException {
         //UsernamePasswordToken对象用来存放提交的登录信息
-        UsernamePasswordToken token=(UsernamePasswordToken) authenticationToken;
+        CustomUsernamePasswordToken token=(CustomUsernamePasswordToken) authenticationToken;
 
         logger.info("验证当前Subject时获取到token为：" + token);
 

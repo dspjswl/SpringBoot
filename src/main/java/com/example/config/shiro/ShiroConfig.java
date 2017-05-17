@@ -15,6 +15,8 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -83,9 +85,12 @@ public class ShiroConfig {
     @Bean//(name = "securityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManager(CustomShiroRealm customShiroRealm) {
         DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
+        //设置realm.
         dwsm.setRealm(customShiroRealm);
-//      <!-- 用户授权/认证信息Cache, 采用EhCache 缓存 -->
+        //注入EhCache 缓存管理器
         dwsm.setCacheManager(getEhCacheManager());
+        //注入记住我管理器(暂时没看到有效果)
+//        dwsm.setRememberMeManager(rememberMeManager());
         return dwsm;
     }
 
@@ -110,6 +115,11 @@ public class ShiroConfig {
     private void loadShiroFilterChain(ShiroFilterFactoryBean shiroFilterFactoryBean, UserService userService, UserMapper userMapper){
         /////////////////////// 下面这些规则配置最好配置到配置文件中 ///////////////////////
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        //配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
+        filterChainDefinitionMap.put("/logout", "logout");
+        //配置记住我或认证通过可以访问的地址(暂时没看到有效果)
+//        filterChainDefinitionMap.put("/index", "user");
+//        filterChainDefinitionMap.put("/", "user");
         // authc：该过滤器下的页面必须验证后才能访问，它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter
         filterChainDefinitionMap.put("/register", "anon");
         filterChainDefinitionMap.put("/*", "authc");// 这里为了测试，只限制/user，实际开发中请修改为具体拦截的请求规则
@@ -147,7 +157,11 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl("/user");
         shiroFilterFactoryBean.setUnauthorizedUrl("/error/unauthorized");
 
+        Map<String, Filter> filters = new HashMap<String, Filter>();
+        filters.put("authc",customFormAuthenticationFilter());
+        shiroFilterFactoryBean.setFilters(filters);
         loadShiroFilterChain(shiroFilterFactoryBean, userService, userMapper);
+
         return shiroFilterFactoryBean;
     }
 
@@ -177,4 +191,33 @@ public class ShiroConfig {
         return hashedCredentialsMatcher;
     }
 
+    //暂时没看到有效果
+//    /**
+//     * cookie对象;
+//     * @return
+//     */
+//    @Bean
+//    public SimpleCookie rememberMeCookie(){
+//        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+//        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+//        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
+//        simpleCookie.setMaxAge(259200);
+//        return simpleCookie;
+//    }
+//
+//    /**
+//     * cookie管理对象;
+//     * @return
+//     */
+//    @Bean
+//    public CookieRememberMeManager rememberMeManager(){
+//        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+//        cookieRememberMeManager.setCookie(rememberMeCookie());
+//        return cookieRememberMeManager;
+//    }
+
+    @Bean
+    public CustomFormAuthenticationFilter customFormAuthenticationFilter(){
+        return new CustomFormAuthenticationFilter();
+    }
 }

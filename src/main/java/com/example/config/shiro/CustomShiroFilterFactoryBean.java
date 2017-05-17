@@ -1,6 +1,5 @@
 package com.example.config.shiro;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.FilterChainManager;
@@ -15,6 +14,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
@@ -76,6 +76,7 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
             }
         }
 
+        //貌似不加也不会拦截掉静态文件
         @Override
         protected void doFilterInternal(ServletRequest servletRequest, ServletResponse servletResponse,
                                         FilterChain chain) throws ServletException, IOException {
