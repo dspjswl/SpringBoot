@@ -43,4 +43,4 @@ CREATE TABLE `sys_user_role` (
 
 /*Data for the table `t_user_role` */
 
-insert  into `sys_user_rolesys_permission`(`user_id`,`role_id`) values (1,1),(1,3),(2,2),(2,3),(3,3);
+insert  into `sys_user_role`(`user_id`,`role_id`) values (1,1),(1,3),(2,2),(2,3),(3,3);

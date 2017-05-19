@@ -1,9 +1,7 @@
 package com.example.mapper;
 
 import com.example.dto.SysUser;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -19,4 +17,8 @@ public interface UserMapper {
 
     @Select("SELECT * FROM sys_user")
     List<SysUser> getUserList();
+
+    @Insert("insert into sys_user(username,password) values(#{user.username},#{user.password})")
+    @Options(useGeneratedKeys = true, keyProperty = "user.id")
+    int insert(@Param("user") SysUser user);
 }

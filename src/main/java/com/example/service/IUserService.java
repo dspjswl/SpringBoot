@@ -9,4 +9,6 @@ import com.example.dto.SysUser;
  */
 public interface IUserService {
     SysUser findUserByName(String username);
+
+    SysUser insert(SysUser user);
 }

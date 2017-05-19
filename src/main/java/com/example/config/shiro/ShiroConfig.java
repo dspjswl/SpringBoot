@@ -2,6 +2,7 @@ package com.example.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.example.mapper.UserMapper;
+import com.example.service.IUserService;
 import com.example.service.impl.UserService;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -12,11 +13,11 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,6 +32,12 @@ import java.util.Map;
 public class ShiroConfig {
     private static final Logger logger = LoggerFactory.getLogger(ShiroConfig.class);
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Bean
     public EhCacheManager getEhCacheManager() {
         EhCacheManager em = new EhCacheManager();
@@ -38,7 +45,7 @@ public class ShiroConfig {
         return em;
     }
 
-    @Bean//(name = "customShiroRealm")
+    @Bean(name = "customShiroRealm")
     public CustomShiroRealm customShiroRealm(EhCacheManager cacheManager) {
         CustomShiroRealm realm = new CustomShiroRealm();
         realm.setCacheManager(cacheManager);
@@ -120,15 +127,14 @@ public class ShiroConfig {
         //配置记住我或认证通过可以访问的地址(暂时没看到有效果)
 //        filterChainDefinitionMap.put("/index", "user");
 //        filterChainDefinitionMap.put("/", "user");
+        filterChainDefinitionMap.put("/register", "anon"); //注册页面不拦截
         // authc：该过滤器下的页面必须验证后才能访问，它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter
-        filterChainDefinitionMap.put("/register", "anon");
-        filterChainDefinitionMap.put("/*", "authc");// 这里为了测试，只限制/user，实际开发中请修改为具体拦截的请求规则
+        filterChainDefinitionMap.put("/*", "authc");//其余页面都拦截
         // anon：它对应的过滤器里面是空的,什么都没做
         logger.info("##################从数据库读取权限规则，加载到shiroFilter中##################");
         filterChainDefinitionMap.put("/user/edit/**", "authc,perms[user:edit]");// 这里为了测试，固定写死的值，也可以从数据库或其他配置中读取
-
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/**", "anon");//anon 可以理解为不拦截
+//
+//        filterChainDefinitionMap.put("/login", "anon");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
     }
@@ -149,6 +155,8 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, UserService userService, UserMapper userMapper) {
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
+        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();//获取filters
+        filters.put("authc", new CustomFormAuthenticationFilter()); //将自定义的CustomFormAuthenticationFilter放入
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
@@ -157,8 +165,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl("/user");
         shiroFilterFactoryBean.setUnauthorizedUrl("/error/unauthorized");
 
-        Map<String, Filter> filters = new HashMap<String, Filter>();
-        filters.put("authc",customFormAuthenticationFilter());
+
         shiroFilterFactoryBean.setFilters(filters);
         loadShiroFilterChain(shiroFilterFactoryBean, userService, userMapper);
 
@@ -216,8 +223,4 @@ public class ShiroConfig {
 //        return cookieRememberMeManager;
 //    }
 
-    @Bean
-    public CustomFormAuthenticationFilter customFormAuthenticationFilter(){
-        return new CustomFormAuthenticationFilter();
-    }
 }

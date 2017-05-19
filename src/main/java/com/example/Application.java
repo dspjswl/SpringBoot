@@ -1,21 +1,18 @@
 package com.example;
 
-import com.example.service.IRedisService;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ImportResource;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //@EnableDiscoveryClient
 @ImportResource({ "classpath:applicationContext.xml"})
 @SpringBootApplication
 @MapperScan(basePackages = "com.example.mapper")
 @ServletComponentScan
+@EnableTransactionManagement
 public class Application {
 
 	public static void main(String[] args) {

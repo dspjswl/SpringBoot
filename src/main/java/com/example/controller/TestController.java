@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.dto.Member;
 import com.example.dto.SysUser;
 import com.example.service.ITestService;
+import com.example.service.IUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
@@ -33,6 +34,10 @@ public class TestController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
     @Autowired
     private ITestService testService;
+
+    @Autowired
+    private IUserService userService;
+
     @RequestMapping("/test")
     public HashMap<String, Object> index() {
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -66,7 +71,7 @@ public class TestController {
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public ModelAndView register(@Valid SysUser user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelAndView register(@Valid SysUser user, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception {
         ModelAndView mav = new ModelAndView();
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
@@ -80,10 +85,13 @@ public class TestController {
             return mav;
         }
         //退出当前用户
+        String s = (new Md5Hash(user.getPassword())).toString();
+        user.setPassword(s);
+        userService.insert(user);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
+        redirectAttributes.addFlashAttribute("username",user.getUsername());
         mav.setViewName("redirect:/login");
-        String s = (new Md5Hash(user.getPassword())).toString();
         return mav;
     }
 }
