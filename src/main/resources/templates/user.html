@@ -3,23 +3,60 @@
       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:include="header::header"></head>
 <body>
-<h1 th:text="${message}"></h1>
-<h1>用户列表--<a th:href="@{/logout}">退出登录</a>    </h1>
+<h1 th:text="#{welcome}"></h1>
+<h1>用户列表--<a th:href="@{/logout}">退出登录</a></h1>
 <h2>权限列表</h2>
 <shiro:authenticated>用户已经登录显示此内容<br/></shiro:authenticated>
 <shiro:hasRole name="manager">manager角色登录显示此内容<br/></shiro:hasRole>
 <shiro:hasRole name="admin">admin角色登录显示此内容<br/></shiro:hasRole>
-<shiro:hasRole name="normal">normal角色登录显示此内容<br/></shiro:hasRole><br/>
+<shiro:hasRole name="normal">normal角色登录显示此内容<br/></shiro:hasRole>
+<br/>
 
-<shiro:hasAnyRoles name="manager,admin">manager or admin 角色用户登录显示此内容<br/></shiro:hasAnyRoles><br/>
-<shiro:principal/>-显示当前登录用户名<br/><br/>
+<shiro:hasAnyRoles name="manager,admin">manager or admin 角色用户登录显示此内容<br/></shiro:hasAnyRoles>
+<br/>
+<shiro:principal/>
+-显示当前登录用户名<br/><br/>
 <shiro:hasPermission name="add">add权限用户显示此内容<br/></shiro:hasPermission>
 <shiro:hasPermission name="user:query">user:query权限用户显示此内容<br/></shiro:hasPermission>
 <shiro:lacksPermission name="user:query">不具有user:query权限的用户显示此内容 <br/></shiro:lacksPermission>
 
 <br/>所有用户列表：<br/>
 <ul th:each="user:${userList}">
-        <li>用户名：<span th:text="${user.username}"></span>----密码：<span th:text="${user.password}"></span>----<a th:href="@{'/user/edit/'+${user.id}}">修改用户（测试根据不同用户可访问权限不同，本例tom无权限，jack有权限）</a></li>
+    <li>用户名：<span th:text="${user.username}"></span>----密码：<span th:text="${user.password}"></span>----<a
+            th:href="@{'/user/edit/'+${user.id}}">修改用户（测试根据不同用户可访问权限不同，本例tom无权限，jack有权限）</a></li>
 </ul>
+<a th:href="@{/changeLocale?lang=zh}">
+    中文
+</a>
+<a th:href="@{/changeLocale?lang=en}">
+    英文
+</a>
+<select id="locales" name="locales" text="123">
+    <option th:each="locale:${locales}" th:value="${locale.locale}"
+            th:text="${locale.name}">性名：
+    </option>
+</select>
 </body>
+<script th:inline="javascript">
+    var locale = [[${#locale}]]; //内置变量
+    var welcome = [[#{welcome}]];
+    var locales = [[${locales}]]; //后台
+    //        console.log(message);
+    //        alert(message);
+    $("#locales").bind("change", function (e) {
+        $.ajax({
+            url: 'changeLocale?lang='+$("#locales").val(),
+            type:"GET",
+//            dataType:"json",
+//            contentType : "application/json",
+            async: false,
+            success : function(json) {
+                location.reload();
+            },
+            error : function() {
+            }
+        })
+    });
+
+</script>
 </html>

@@ -4,10 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by yuheng.lin on 2017/5/2.
@@ -17,13 +21,14 @@ public class BaseController {
 
     @RequestMapping("/hello")
     public ModelAndView welcome(ModelAndView mav) {
-        mav.addObject("time",new Date());
+        mav.addObject("time", new Date());
         mav.setViewName("template");
         return mav;
     }
 
     /**
      * 主页跳转.
+     *
      * @return
      */
     @RequestMapping("/")
@@ -34,6 +39,7 @@ public class BaseController {
 
     /**
      * 访问时获取basePath.
+     *
      * @return
      */
     @RequestMapping("/**/*.html")
@@ -54,5 +60,14 @@ public class BaseController {
         //requestURI = requestURI.replace(path, "").replace(".html","");
         //mav.setViewName(null);
         return mav;
+    }
+
+    @RequestMapping("/changeLocale")
+    public void changeLocale(HttpServletRequest request, HttpServletResponse response, String lang) {
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        Locale locale = new Locale(lang);
+        localeResolver.setLocale(request, response, locale);
+
+        return ;
     }
 }

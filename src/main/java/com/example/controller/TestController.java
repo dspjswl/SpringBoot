@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.Member;
 import com.example.dto.SysUser;
+import com.example.service.IMessageService;
 import com.example.service.ITestService;
 import com.example.service.IUserService;
 import org.apache.shiro.SecurityUtils;
@@ -38,10 +39,14 @@ public class TestController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IMessageService messageService;
+
     @RequestMapping("/test")
     public HashMap<String, Object> index() {
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("asd", "affcccf");
+        String welcome = messageService.getMessage("welcome");
+        map.put("asd", welcome);
         return map;
     }
 
