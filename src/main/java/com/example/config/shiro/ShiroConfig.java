@@ -2,8 +2,6 @@ package com.example.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.example.mapper.UserMapper;
-import com.example.service.IUserService;
-import com.example.service.impl.UserService;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -31,9 +29,9 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
     private static final Logger logger = LoggerFactory.getLogger(ShiroConfig.class);
-
-    @Autowired
-    private IUserService userService;
+//    这里注入service的话会导致该service里面的事务无效，所以只要注入mapper即可
+//    @Autowired
+//    private IUserService userService;
 
     @Autowired
     private UserMapper userMapper;
@@ -119,7 +117,7 @@ public class ShiroConfig {
      * @author SHANHY
      * @create  2016年1月14日
      */
-    private void loadShiroFilterChain(ShiroFilterFactoryBean shiroFilterFactoryBean, UserService userService, UserMapper userMapper){
+    private void loadShiroFilterChain(ShiroFilterFactoryBean shiroFilterFactoryBean, UserMapper userMapper){
         /////////////////////// 下面这些规则配置最好配置到配置文件中 ///////////////////////
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         //配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
@@ -152,7 +150,7 @@ public class ShiroConfig {
      * @create  2016年1月14日
      */
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, UserService userService, UserMapper userMapper) {
+    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, UserMapper userMapper) {
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();//获取filters
@@ -167,7 +165,7 @@ public class ShiroConfig {
 
 
         shiroFilterFactoryBean.setFilters(filters);
-        loadShiroFilterChain(shiroFilterFactoryBean, userService, userMapper);
+        loadShiroFilterChain(shiroFilterFactoryBean, userMapper);
 
         return shiroFilterFactoryBean;
     }

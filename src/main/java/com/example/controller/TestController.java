@@ -12,12 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -98,5 +98,37 @@ public class TestController {
         redirectAttributes.addFlashAttribute("username",user.getUsername());
         mav.setViewName("redirect:/login");
         return mav;
+    }
+
+    @Autowired
+    private DiscoveryClient client;
+    @RequestMapping(value = "/add" ,method = RequestMethod.GET)
+    public Integer add(@RequestParam Integer a, @RequestParam Integer b) {
+        ServiceInstance instance = client.getLocalServiceInstance();
+        Integer r = a + b;
+        logger.info("/add, host:" + instance.getHost() + ", service_id:" + instance.getServiceId() + ", result:" + r);
+        return r;
+    }
+
+    @RequestMapping("/discovery")
+    public String doDiscoveryService(){
+        StringBuilder buf = new StringBuilder();
+        List<String> serviceIds = client.getServices();
+        if(!CollectionUtils.isEmpty(serviceIds)){
+            for(String s : serviceIds){
+                System.out.println("serviceId:" + s);
+                List<ServiceInstance> serviceInstances =  client.getInstances(s);
+                if(!CollectionUtils.isEmpty(serviceInstances)){
+                    for(ServiceInstance si:serviceInstances){
+                        buf.append("["+si.getServiceId() +" host=" +si.getHost()+" port="+si.getPort()+" uri="+si.getUri()+"]");
+                    }
+                }else{
+                    buf.append("no service.");
+                }
+            }
+        }
+
+
+        return buf.toString();
     }
 }
