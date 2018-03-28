@@ -1,22 +1,31 @@
 package com.example.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import com.example.mapper.UserMapper;
+import com.example.config.druid.ShiroRedisConfigInfo;
+import com.example.dto.FilterRule;
+import com.example.mapper.FilterRuleMapper;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,20 +42,74 @@ public class ShiroConfig {
 //    @Autowired
 //    private IUserService userService;
 
-    @Autowired
-    private UserMapper userMapper;
-
+//    @Value("${spring.redis.host}")
+//    private String REDIS_HOST;
+//
+//    @Value("${spring.redis.port}")
+//    private int REDIS_PORT;
+//
+//    @Value("${spring.redis.expire}")
+//    private int REDIS_EXPIRE;
+    /**
+     * shiro缓存管理器;
+     * 需要注入对应的其它的实体类中：
+     * 1、安全管理器：securityManager
+     * 可见securityManager是整个shiro的核心；
+     *
+     * @return
+     */
+//    @Bean
+//    public EhCacheManager getEhCacheManager() {
+//        EhCacheManager em = new EhCacheManager();
+//        em.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
+//        return em;
+//    }
     @Bean
-    public EhCacheManager getEhCacheManager() {
-        EhCacheManager em = new EhCacheManager();
-        em.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
-        return em;
+    public RedisManager getRedisManager(ShiroRedisConfigInfo shiroRedisConfigInfo) {
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost(shiroRedisConfigInfo.getHost());
+        redisManager.setPort(shiroRedisConfigInfo.getPort());
+        redisManager.setExpire(shiroRedisConfigInfo.getExpire());// 配置过期时间
+        // redisManager.setTimeout(timeout);
+        // redisManager.setPassword(password);
+        return redisManager;
+    }
+
+    /**
+     * cacheManager 缓存 redis实现
+     *
+     * @return
+     */
+    @Bean
+    public RedisCacheManager getRedisCacheManager(RedisManager redisManager) {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager);
+        return redisCacheManager;
+    }
+
+    /**
+     * RedisSessionDAO shiro sessionDao层的实现 通过redis
+     */
+    @Bean
+    public RedisSessionDAO redisSessionDAO(RedisManager redisManager) {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager);
+        return redisSessionDAO;
+    }
+    /**
+     * shiro session的管理
+     */
+    @Bean
+    public DefaultWebSessionManager getSessionManager(RedisSessionDAO redisSessionDAO) {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionDAO(redisSessionDAO);
+        return sessionManager;
     }
 
     @Bean(name = "customShiroRealm")
-    public CustomShiroRealm customShiroRealm(EhCacheManager cacheManager) {
+    public CustomShiroRealm customShiroRealm(RedisCacheManager redisCacheManager) {
         CustomShiroRealm realm = new CustomShiroRealm();
-        realm.setCacheManager(cacheManager);
+        realm.setCacheManager(redisCacheManager);
         realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
@@ -88,12 +151,13 @@ public class ShiroConfig {
     }
 
     @Bean//(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(CustomShiroRealm customShiroRealm) {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(CustomShiroRealm customShiroRealm, RedisCacheManager redisCacheManager, SessionManager sessionManager) {
         DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
         //设置realm.
         dwsm.setRealm(customShiroRealm);
         //注入EhCache 缓存管理器
-        dwsm.setCacheManager(getEhCacheManager());
+        dwsm.setCacheManager(redisCacheManager);
+        dwsm.setSessionManager(sessionManager);
         //注入记住我管理器(暂时没看到有效果)
 //        dwsm.setRememberMeManager(rememberMeManager());
         return dwsm;
@@ -117,22 +181,21 @@ public class ShiroConfig {
      * @author SHANHY
      * @create  2016年1月14日
      */
-    private void loadShiroFilterChain(ShiroFilterFactoryBean shiroFilterFactoryBean, UserMapper userMapper){
+    public static void loadShiroFilterChain(ShiroFilterFactoryBean shiroFilterFactoryBean, FilterRuleMapper filterRuleMapper){
         /////////////////////// 下面这些规则配置最好配置到配置文件中 ///////////////////////
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-        //配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/logout", "logout");
         //配置记住我或认证通过可以访问的地址(暂时没看到有效果)
-//        filterChainDefinitionMap.put("/index", "user");
-//        filterChainDefinitionMap.put("/", "user");
-        filterChainDefinitionMap.put("/register", "anon"); //注册页面不拦截
+        //        filterChainDefinitionMap.put("/index", "user");
+        //        filterChainDefinitionMap.put("/", "user");
+        // logout: 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         // authc：该过滤器下的页面必须验证后才能访问，它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter
-        filterChainDefinitionMap.put("/*", "authc");//其余页面都拦截
         // anon：它对应的过滤器里面是空的,什么都没做
         logger.info("##################从数据库读取权限规则，加载到shiroFilter中##################");
-        filterChainDefinitionMap.put("/user/edit/**", "authc,perms[user:edit]");// 这里为了测试，固定写死的值，也可以从数据库或其他配置中读取
-//
-//        filterChainDefinitionMap.put("/login", "anon");
+
+        List<FilterRule> ruleList = filterRuleMapper.getAllRuleList();
+        for (FilterRule filterRule : ruleList) {
+            filterChainDefinitionMap.put(filterRule.getUrl(), filterRule.getPermission());
+        }
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
     }
@@ -150,7 +213,7 @@ public class ShiroConfig {
      * @create  2016年1月14日
      */
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, UserMapper userMapper) {
+    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, FilterRuleMapper filterRuleMapper) {
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();//获取filters
@@ -165,7 +228,7 @@ public class ShiroConfig {
 
 
         shiroFilterFactoryBean.setFilters(filters);
-        loadShiroFilterChain(shiroFilterFactoryBean, userMapper);
+        loadShiroFilterChain(shiroFilterFactoryBean, filterRuleMapper);
 
         return shiroFilterFactoryBean;
     }
@@ -220,5 +283,4 @@ public class ShiroConfig {
 //        cookieRememberMeManager.setCookie(rememberMeCookie());
 //        return cookieRememberMeManager;
 //    }
-
 }

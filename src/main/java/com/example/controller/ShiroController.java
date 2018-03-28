@@ -3,11 +3,14 @@ package com.example.controller;
 import com.example.config.shiro.CaptchaNotMatchException;
 import com.example.dto.SysUser;
 import com.example.mapper.UserMapper;
+import com.example.service.IShiroService;
+import com.netflix.discovery.converters.Auto;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +42,9 @@ public class ShiroController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private IShiroService shiroService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginForm(Model model) {
@@ -129,7 +135,7 @@ public class ShiroController {
     }
 
     @RequestMapping("/user/edit/{userid}")
-    @RequiresPermissions(value = "user:query", logical = Logical.AND)
+    @RequiresPermissions(value = "user:edit", logical = Logical.AND)
     public String getUserList(@PathVariable int userid, Map<String, Object> model) {
         logger.info("------进入用户信息修改-------");
         model.put("userId", userid);
@@ -142,5 +148,14 @@ public class ShiroController {
     public String testPermission() {
         logger.info("------测试是否有权限-------");
         return "user_edit";
+    }
+
+    @RequestMapping("/updatePermission")
+    @ResponseBody
+    @RequiresRoles(value = {"admin"})
+    public String updatePermission() {
+        shiroService.updatePermission();
+        logger.info("------更新权限成功-------");
+        return "update permission successfully";
     }
 }
