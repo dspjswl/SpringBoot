@@ -1,0 +1,45 @@
+version: '3'
+services:
+  mysql:
+   container_name: mysql-server
+   image: mysql
+   environment:
+    MYSQL_ROOT_PASSWORD: swlinyuheng3
+    MYSQL_ROOT_HOST: '%'
+   volumes:
+      - /private/etc:/etc/mysql
+      - /usr/local/mysql-5.7.21-macos10.13-x86_64/data:/var/lib/mysql
+   ports:
+   - "3306:3306"
+   restart: always
+
+  redis:
+   container_name: redis-server
+   image: redis
+   volumes:
+      - /Users/yuheng_lin/work/docker_workspace/redis:/etc/redis/redis.conf
+   ports:
+   - "6379:6379"
+   restart: always
+
+  cloud:
+   container_name: cloud-server
+   image: dspjswl/clouddemo
+   ports:
+   - "1111:1111"
+   restart: always
+
+  app:
+    container_name: app_1
+    image: dspjswl/demo
+    restart: always
+    ports:
+    - "8070:8070"
+    depends_on:
+      - redis
+      - mysql
+      - cloud
+    links:
+      - "redis"
+      - "mysql"
+      - "cloud"
