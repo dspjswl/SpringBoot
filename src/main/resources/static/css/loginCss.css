@@ -125,3 +125,10 @@
         padding: 10px 20px;
     }
 }
+/*重写padding-left的属性*/
+#form_captcha.col-md-8{
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 0px;
+}

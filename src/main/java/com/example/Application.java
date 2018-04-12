@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(basePackages = "com.example.mapper")
 @ServletComponentScan
 @EnableTransactionManagement
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 public class Application {
 
 	public static void main(String[] args) {
