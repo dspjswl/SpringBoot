@@ -2,9 +2,13 @@ package com.example.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.example.config.druid.ShiroRedisConfigInfo;
+import com.example.config.oauth.OAuth2AuthenticationFilter;
+import com.example.config.oauth.OAuth2Realm;
 import com.example.dto.FilterRule;
 import com.example.mapper.FilterRuleMapper;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -24,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import javax.servlet.Filter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +119,34 @@ public class ShiroConfig {
         return realm;
     }
 
+    @Bean(name = "oAuth2Realm")
+    public OAuth2Realm oAuth2Realm(RedisCacheManager redisCacheManager) {
+        OAuth2Realm realm = new OAuth2Realm();
+        realm.setAccessTokenUrl("http://localhost:8070/demo/accessToken");
+        realm.setClientId("c1ebe466-1cdc-4bd3-ab69-77c3561b9dee");
+        realm.setClientSecret("d8346ea2-6017-43ed-ad68-19c0f971738b");
+        realm.setRedirectUrl("http://localhost:8070/demo/oauth2-login");
+        realm.setUserInfoUrl("http://localhost:8070/demo/userInfo");
+        realm.setCacheManager(redisCacheManager);
+        realm.setCredentialsMatcher(hashedCredentialsMatcher());
+        return realm;
+    }
+
+//    @Bean(name = "authenticator")
+//    public CustomModularRealmAuthenticator getCustomModularRealmAuthenticator() {
+//        CustomModularRealmAuthenticator authenticator = new CustomModularRealmAuthenticator();
+//        authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+//        return authenticator;
+//    }
+
+    @Bean(name = "oAuth2AuthenticationFilter")
+    public OAuth2AuthenticationFilter oAuth2AuthenticationFilter() {
+        OAuth2AuthenticationFilter filter = new OAuth2AuthenticationFilter();
+        filter.setAuthcCodeParam("code");
+        filter.setFailureUrl("/oauth2Failure");
+        return filter;
+    }
+
     /**
      * 注册DelegatingFilterProxy（Shiro）
      * 集成Shiro有2种方法：
@@ -151,10 +184,16 @@ public class ShiroConfig {
     }
 
     @Bean//(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(CustomShiroRealm customShiroRealm, RedisCacheManager redisCacheManager, SessionManager sessionManager) {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(CustomShiroRealm customShiroRealm, OAuth2Realm oAuth2Realm, RedisCacheManager redisCacheManager, SessionManager sessionManager) {
         DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
+        // 貌似要在设置realm之前才有效果
+//        dwsm.setAuthenticator(getCustomModularRealmAuthenticator());
         //设置realm.
-        dwsm.setRealm(customShiroRealm);
+//        List<Realm> realms = new ArrayList<>();
+//        realms.add(customShiroRealm);
+//        realms.add(oAuth2Realm);
+                dwsm.setRealm(customShiroRealm);
+//        dwsm.setRealms(realms);
         //注入EhCache 缓存管理器
         dwsm.setCacheManager(redisCacheManager);
         dwsm.setSessionManager(sessionManager);
@@ -218,6 +257,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();//获取filters
         filters.put("authc", new CustomFormAuthenticationFilter()); //将自定义的CustomFormAuthenticationFilter放入
+        filters.put("oauth2Authc", oAuth2AuthenticationFilter());
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面

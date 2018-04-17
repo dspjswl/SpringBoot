@@ -11,6 +11,10 @@ public class CustomUsernamePasswordToken extends UsernamePasswordToken {
     //验证码字符串
     private String captcha;
 
+    public CustomUsernamePasswordToken(String username, char[] password){
+        this(username, password, false, null, "");
+    }
+
     public CustomUsernamePasswordToken(String username, char[] password,
                                         boolean rememberMe, String host, String captcha) {
         super(username, password, rememberMe, host);

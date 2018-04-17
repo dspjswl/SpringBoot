@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper.ClientMapper" >
+    <resultMap id="BaseResultMap" type="com.example.dto.OAuthClient">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="CLIENT_ID" jdbcType="VARCHAR" property="clientId" />
+    <result column="CLIENT_NAME" jdbcType="VARCHAR" property="clientName" />
+    <result column="CLIENT_SECRET" jdbcType="VARCHAR" property="clientSecret" />
+    </resultMap>
+    <select id="findByClientId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from oauth2_client where client_id=#{clientId}
+    </select>
+</mapper>
