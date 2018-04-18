@@ -1,7 +1,7 @@
 package com.example.config.oauth;
 
-import com.example.config.shiro.CustomUsernamePasswordToken;
-import com.example.dto.OAuth2Token;
+import com.example.config.oauth.github.GithubData;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthBearerClientRequest;
@@ -15,6 +15,11 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
 
 /**
  * OAuth2Realm.
@@ -23,6 +28,11 @@ import org.apache.shiro.subject.PrincipalCollection;
  */
 public class OAuth2Realm extends AuthorizingRealm {
 
+    private Logger log = LoggerFactory.getLogger(OAuth2Realm.class);
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    private String loginObject;
     private String clientId;
     private String clientSecret;
     private String accessTokenUrl;
@@ -69,6 +79,14 @@ public class OAuth2Realm extends AuthorizingRealm {
         this.redirectUrl = redirectUrl;
     }
 
+    public String getLoginObject() {
+        return loginObject;
+    }
+
+    public void setLoginObject(String loginObject) {
+        this.loginObject = loginObject;
+    }
+
     //省略setter。
 
     @Override
@@ -84,8 +102,8 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {//验证
-        OAuth2Token customToken = (OAuth2Token) token;
-        String code = customToken.getAuthCode();
+        OAuth2Token oAuth2Token = (OAuth2Token) token;
+        String code = oAuth2Token.getAuthCode();
         String username = extractUsername(code);
 
         SimpleAuthenticationInfo authenticationInfo =
@@ -106,7 +124,8 @@ public class OAuth2Realm extends AuthorizingRealm {
                     .setCode(code)
                     .setRedirectURI(redirectUrl)
                     .buildQueryMessage();
-
+            accessTokenRequest.addHeader("Accept", "application/json");
+            accessTokenRequest.addHeader("Content-Type", "application/json");
             OAuthAccessTokenResponse oAuthResponse = oAuthClient.accessToken(accessTokenRequest, OAuth.HttpMethod.POST);
 
             String accessToken = oAuthResponse.getAccessToken();
@@ -116,11 +135,24 @@ public class OAuth2Realm extends AuthorizingRealm {
                     .setAccessToken(accessToken).buildQueryMessage();
 
             OAuthResourceResponse resourceResponse = oAuthClient.resource(userInfoRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
-            String username = resourceResponse.getBody();
+            String username = handleBody(resourceResponse.getBody());
+            log.debug("-----username为:{}", username);
             return username;
         } catch (Exception e) {
             e.printStackTrace();
             throw new OAuth2AuthenticationException(e);
+        }
+    }
+
+    private String handleBody(String body) throws IOException {
+        switch (loginObject) {
+        case "DEMO":
+            return body;
+        case "GITHUB":
+            GithubData githubData = objectMapper.readValue(body, GithubData.class);
+            return githubData.getLogin();
+        default:
+            return body;
         }
     }
 }

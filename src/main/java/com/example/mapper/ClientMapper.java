@@ -1,7 +1,6 @@
 package com.example.mapper;
 
-import com.example.dto.OAuthClient;
-import com.example.util.BaseMapper;
+import com.example.config.oauth.OAuthClient;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

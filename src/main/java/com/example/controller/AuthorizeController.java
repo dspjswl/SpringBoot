@@ -2,12 +2,8 @@ package com.example.controller;
 
 import com.example.config.shiro.CustomUsernamePasswordToken;
 import com.example.constants.Constants;
-import com.example.dto.OAuth2Token;
-import com.example.dto.OAuthClient;
-import com.example.dto.OAuthUser;
 import com.example.service.IClientService;
 import com.example.service.IOAuthService;
-import com.example.service.IOAuthUserService;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
 import org.apache.oltu.oauth2.as.request.OAuthAuthzRequest;
@@ -20,7 +16,6 @@ import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.ResponseType;
 import org.apache.oltu.oauth2.common.utils.OAuthUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 /**
  * OAuth2 授权控制器controller.

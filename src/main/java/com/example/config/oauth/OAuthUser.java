@@ -1,4 +1,4 @@
-package com.example.dto;
+package com.example.config.oauth;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

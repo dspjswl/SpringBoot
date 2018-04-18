@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.dto.OAuthClient;
+import com.example.config.oauth.OAuthClient;
 
 import java.util.List;
 

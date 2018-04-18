@@ -5,8 +5,8 @@ function linkDemoLogin() {
 }
 
 function linkQQLogin() {
-    $.get(_basePath+'/oauth/qqLogin',function (data) {
-        window.location.href = _basePath + data;
+    $.get(_basePath+'/oauth/githubLogin',function (data) {
+        window.location.href = data;
     });
 }
 

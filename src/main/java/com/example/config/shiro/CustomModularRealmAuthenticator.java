@@ -1,7 +1,6 @@
 package com.example.config.shiro;
 
-import com.example.config.oauth.OAuth2Realm;
-import com.example.dto.OAuth2Token;
+import com.example.config.oauth.OAuth2Token;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

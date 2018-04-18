@@ -1,10 +1,9 @@
 package com.example.service.impl;
 
-import com.example.dto.OAuthUser;
+import com.example.config.oauth.OAuthUser;
 import com.example.mapper.OAuthUserMapper;
 import com.example.service.IOAuthUserService;
 import com.example.util.PasswordHelper;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

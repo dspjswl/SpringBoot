@@ -1,6 +1,6 @@
 package com.example.service.impl;
 
-import com.example.dto.OAuthClient;
+import com.example.config.oauth.OAuthClient;
 import com.example.mapper.ClientMapper;
 import com.example.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;

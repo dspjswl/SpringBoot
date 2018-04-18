@@ -1,4 +1,4 @@
-package com.example.dto;
+package com.example.config.oauth;
 
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;

@@ -1,7 +1,5 @@
 package com.example.config.oauth;
 
-import com.example.config.shiro.CustomUsernamePasswordToken;
-import com.example.dto.OAuth2Token;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;

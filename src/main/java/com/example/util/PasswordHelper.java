@@ -1,6 +1,6 @@
 package com.example.util;
 
-import com.example.dto.OAuthUser;
+import com.example.config.oauth.OAuthUser;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
