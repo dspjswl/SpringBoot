@@ -23,9 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.Filter;
 import java.util.ArrayList;
@@ -128,16 +130,29 @@ public class ShiroConfig {
         realm.setRedirectUrl("http://localhost:8070/demo/oauth2-login");
         realm.setUserInfoUrl("http://localhost:8070/demo/userInfo");
         realm.setCacheManager(redisCacheManager);
-        realm.setCredentialsMatcher(hashedCredentialsMatcher());
+        //realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
 
-//    @Bean(name = "authenticator")
-//    public CustomModularRealmAuthenticator getCustomModularRealmAuthenticator() {
-//        CustomModularRealmAuthenticator authenticator = new CustomModularRealmAuthenticator();
-//        authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
-//        return authenticator;
-//    }
+    @Bean(name = "oAuth2Realm")
+    public OAuth2Realm githubRealm(RedisCacheManager redisCacheManager) {
+        OAuth2Realm realm = new OAuth2Realm();
+        realm.setAccessTokenUrl("http://localhost:8070/demo/accessToken");
+        realm.setClientId("c1ebe466-1cdc-4bd3-ab69-77c3561b9dee");
+        realm.setClientSecret("d8346ea2-6017-43ed-ad68-19c0f971738b");
+        realm.setRedirectUrl("http://localhost:8070/demo/oauth2-login");
+        realm.setUserInfoUrl("http://localhost:8070/demo/userInfo");
+        realm.setCacheManager(redisCacheManager);
+        //realm.setCredentialsMatcher(hashedCredentialsMatcher());
+        return realm;
+    }
+
+    @Bean(name = "authenticator")
+    public CustomModularRealmAuthenticator getCustomModularRealmAuthenticator() {
+        CustomModularRealmAuthenticator authenticator = new CustomModularRealmAuthenticator();
+        authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+        return authenticator;
+    }
 
     @Bean(name = "oAuth2AuthenticationFilter")
     public OAuth2AuthenticationFilter oAuth2AuthenticationFilter() {
@@ -186,16 +201,17 @@ public class ShiroConfig {
     @Bean//(name = "securityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManager(CustomShiroRealm customShiroRealm, OAuth2Realm oAuth2Realm, RedisCacheManager redisCacheManager, SessionManager sessionManager) {
         DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
-        // 貌似要在设置realm之前才有效果
-//        dwsm.setAuthenticator(getCustomModularRealmAuthenticator());
-        //设置realm.
-//        List<Realm> realms = new ArrayList<>();
-//        realms.add(customShiroRealm);
-//        realms.add(oAuth2Realm);
-                dwsm.setRealm(customShiroRealm);
-//        dwsm.setRealms(realms);
-        //注入EhCache 缓存管理器
+        //设置自定义的realm认证器，要放在设置realm之前才有效果
+        dwsm.setAuthenticator(getCustomModularRealmAuthenticator());
+        //设置多个realm.
+        List<Realm> realms = new ArrayList<>();
+        realms.add(customShiroRealm);
+        realms.add(oAuth2Realm);
+//                dwsm.setRealm(customShiroRealm);
+        dwsm.setRealms(realms);
+        //注入Redis缓存管理器
         dwsm.setCacheManager(redisCacheManager);
+        //注入Session管理器
         dwsm.setSessionManager(sessionManager);
         //注入记住我管理器(暂时没看到有效果)
 //        dwsm.setRememberMeManager(rememberMeManager());
@@ -240,6 +256,21 @@ public class ShiroConfig {
     }
 
     /**
+     * 该方法用于解决问题"No SecurityManager accessible to the calling code, either bound to the org.apache.shiro.util.ThreadContext or as a vm static singleton."
+     * 解决方案采用<a>http://www.cnblogs.com/ginponson/p/6217057.html</a>
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean delegatingFilterProxy(){
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+        proxy.setTargetFilterLifecycle(true);
+        proxy.setTargetBeanName("shiroFilter");
+        filterRegistrationBean.setFilter(proxy);
+        return filterRegistrationBean;
+    }
+
+    /**
      * ShiroFilter<br/>
      * 注意这里参数中的 StudentService 和 IScoreDao 只是一个例子，因为我们在这里可以用这样的方式获取到相关访问数据库的对象，
      * 然后读取数据库相关配置，配置到 shiroFilterFactoryBean 的访问规则中。实际项目中，请使用自己的Service来处理业务逻辑。
@@ -258,6 +289,7 @@ public class ShiroConfig {
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();//获取filters
         filters.put("authc", new CustomFormAuthenticationFilter()); //将自定义的CustomFormAuthenticationFilter放入
         filters.put("oauth2Authc", oAuth2AuthenticationFilter());
+//        filters.put("logout", getCustomLogoutFilter());
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
@@ -299,6 +331,11 @@ public class ShiroConfig {
         return hashedCredentialsMatcher;
     }
 
+//  配置完logout时会死循环
+//    @Bean
+//    public CustomLogoutFilter getCustomLogoutFilter() {
+//        return new CustomLogoutFilter();
+//    }
     //暂时没看到有效果
 //    /**
 //     * cookie对象;

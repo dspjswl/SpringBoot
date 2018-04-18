@@ -6,6 +6,7 @@ import com.example.mapper.UserMapper;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
@@ -74,7 +75,7 @@ public class CustomShiroRealm  extends AuthorizingRealm {
 
         //查出是否有此用户
         SysUser user=userMapper.findUserByName(token.getUsername());
-        if(user!=null){
+        if(user != null){
             // 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
             return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
         }

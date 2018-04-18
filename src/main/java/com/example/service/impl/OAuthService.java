@@ -1,9 +1,7 @@
 package com.example.service.impl;
 
 import com.example.service.IOAuthService;
-import org.apache.shiro.cache.Cache;
-import org.crazycake.shiro.RedisCache;
-import org.crazycake.shiro.RedisCacheManager;
+import com.example.util.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,44 +12,47 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OAuthService implements IOAuthService{
-    private Cache<String, String> cache;
+//    private Cache<String, String> cache;
+
+    @Autowired
+    private CacheUtil cacheUtil;
 
     @Autowired
     private ClientService clientService;
 
-    @Autowired
-    public OAuthService(RedisCacheManager cacheManager) {
-        this.cache = cacheManager.getCache("code-cache");
-    }
+//    @Autowired
+//    public OAuthService(RedisCacheManager cacheManager) {
+//        this.cache = cacheManager.getCache("code-cache");
+//    }
 
     @Override
     public void addAuthCode(String authCode, String username) {
-        cache.put(authCode, username);
+        cacheUtil.add(authCode, username);
     }
 
     @Override
     public void addAccessToken(String accessToken, String username) {
-        cache.put(accessToken, username);
+        cacheUtil.add(accessToken, username);
     }
 
     @Override
     public String getUsernameByAuthCode(String authCode) {
-        return cache.get(authCode);
+        return cacheUtil.get(authCode);
     }
 
     @Override
     public String getUsernameByAccessToken(String accessToken) {
-        return cache.get(accessToken);
+        return cacheUtil.get(accessToken);
     }
 
     @Override
     public boolean checkAuthCode(String authCode) {
-        return cache.get(authCode) != null;
+        return cacheUtil.get(authCode) != null;
     }
 
     @Override
     public boolean checkAccessToken(String accessToken) {
-        return cache.get(accessToken) != null;
+        return cacheUtil.get(accessToken) != null;
     }
 
     @Override

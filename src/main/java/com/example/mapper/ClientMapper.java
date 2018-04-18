@@ -29,6 +29,6 @@ public interface ClientMapper {
     //@Select("select * from oauth2_client where client_id=#{clientId}")
     OAuthClient findByClientId(@Param("clientId") String clientId);
 
-    @Select("select * from oauth2_client where client_secret=#{client.clientSecret}")
+    @Select("select * from oauth2_client where client_secret=#{clientSecret}")
     OAuthClient findByClientSecret(@Param("clientSecret") String clientSecret);
 }

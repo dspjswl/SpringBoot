@@ -4,14 +4,17 @@ import com.example.config.shiro.CaptchaNotMatchException;
 import com.example.dto.SysUser;
 import com.example.mapper.UserMapper;
 import com.example.service.IShiroService;
+import com.example.util.CacheUtil;
 import com.netflix.discovery.converters.Auto;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.Subject;
+import org.crazycake.shiro.RedisCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,9 @@ import java.util.Map;
 public class ShiroController {
 
     private static final Logger logger = LoggerFactory.getLogger(ShiroController.class);
+
+    @Autowired
+    private CacheUtil cacheUtil;
 
     @Autowired
     private UserMapper userMapper;
@@ -123,6 +129,7 @@ public class ShiroController {
 //    public String logout(RedirectAttributes redirectAttributes ){
 //        //使用权限管理工具进行用户的退出，跳出登录，给出提示信息
 //        SecurityUtils.getSubject().logout();
+////        cacheUtil.clear();
 //        redirectAttributes.addFlashAttribute("message", "您已安全退出");
 //        return "redirect:/login";
 //    }

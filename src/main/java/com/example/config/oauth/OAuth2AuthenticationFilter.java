@@ -73,7 +73,7 @@ public class OAuth2AuthenticationFilter extends AuthenticatingFilter {
         this.failureUrl = failureUrl;
     }
 
-    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
+    protected OAuth2Token createToken(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String code = httpRequest.getParameter(authcCodeParam);
         return new OAuth2Token(code);

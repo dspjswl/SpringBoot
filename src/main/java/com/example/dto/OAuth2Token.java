@@ -8,7 +8,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  *
  * @author yuheng.lin@hand-china.com
  */
-public class OAuth2Token extends UsernamePasswordToken implements AuthenticationToken {
+public class OAuth2Token implements AuthenticationToken {
 
     public OAuth2Token(String authCode) {
         this.authCode = authCode;
@@ -16,10 +16,6 @@ public class OAuth2Token extends UsernamePasswordToken implements Authentication
 
     private String authCode;
     private String principal;
-
-    public OAuth2Token(String username, String password) {
-        super(username, password, false, null);
-    }
 
     public String getAuthCode() {
         return authCode;
@@ -29,13 +25,12 @@ public class OAuth2Token extends UsernamePasswordToken implements Authentication
         this.authCode = authCode;
     }
 
-    public void setPrincipal(String principal) {
-        this.principal = principal;
+    public String getPrincipal() {
+        return principal;
     }
 
-    @Override
-    public Object getPrincipal() {
-        return principal;
+    public void setPrincipal(String principal) {
+        this.principal = principal;
     }
 
     @Override
