@@ -42,12 +42,13 @@ public class OAuthController {
     @RequestMapping("/demoLogin")
     @ResponseBody
     public String demoLogin() {
+        OAuth2Realm oAuth2Realm = null;
         if (oAuth2RealmList != null && oAuth2RealmList.size() > 0) {
-            OAuth2Realm oAuth2Realm = (OAuth2Realm) (oAuth2RealmList.get(0));
+            oAuth2Realm = (OAuth2Realm) (oAuth2RealmList.get(0));
             oAuth2Realm.setLoginObject("DEMO");
             realmInfoHandler.setRealmInfo(oAuth2Realm);
         }
-        return "/authorize?client_id=c1ebe466-1cdc-4bd3-ab69-77c3561b9dee&response_type=code&redirect_uri=http://localhost:8070/demo/oauth2-login";
+        return "/authorize?client_id="+oAuth2Realm.getClientId()+"&response_type=code&redirect_uri="+oAuth2Realm.getRedirectUrl();
     }
 
     @RequestMapping("/qqLogin")
@@ -59,11 +60,12 @@ public class OAuthController {
     @RequestMapping("/githubLogin")
     @ResponseBody
     public String githubLogin() {
+        OAuth2Realm oAuth2Realm = null;
         if (oAuth2RealmList != null && oAuth2RealmList.size() > 0) {
-            OAuth2Realm oAuth2Realm = (OAuth2Realm) (oAuth2RealmList.get(0));
+            oAuth2Realm = (OAuth2Realm) (oAuth2RealmList.get(0));
             oAuth2Realm.setLoginObject("GITHUB");
             realmInfoHandler.setRealmInfo(oAuth2Realm);
         }
-        return "https://github.com/login/oauth/authorize?client_id=de86cd3dce191ef8d721&client_secret=5d9c3cf2c5ce15883bb5f43d119a2efd8a4c723f&redirect_uri=http://192.168.202.18:8070/demo/oauth2-login";
+        return "https://github.com/login/oauth/authorize?client_id="+oAuth2Realm.getClientId()+"&client_secret="+oAuth2Realm.getClientSecret()+"&redirect_uri="+oAuth2Realm.getRedirectUrl();
     }
 }
