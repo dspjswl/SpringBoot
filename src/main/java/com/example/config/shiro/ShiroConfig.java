@@ -124,24 +124,6 @@ public class ShiroConfig {
     @Bean(name = "oAuth2Realm")
     public OAuth2Realm oAuth2Realm(RedisCacheManager redisCacheManager) {
         OAuth2Realm realm = new OAuth2Realm();
-        realm.setAccessTokenUrl("http://localhost:8070/demo/accessToken");
-        realm.setClientId("c1ebe466-1cdc-4bd3-ab69-77c3561b9dee");
-        realm.setClientSecret("d8346ea2-6017-43ed-ad68-19c0f971738b");
-        realm.setRedirectUrl("http://localhost:8070/demo/oauth2-login");
-        realm.setUserInfoUrl("http://localhost:8070/demo/userInfo");
-        realm.setCacheManager(redisCacheManager);
-        //realm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return realm;
-    }
-
-    @Bean(name = "oAuth2Realm")
-    public OAuth2Realm githubRealm(RedisCacheManager redisCacheManager) {
-        OAuth2Realm realm = new OAuth2Realm();
-        realm.setAccessTokenUrl("http://localhost:8070/demo/accessToken");
-        realm.setClientId("c1ebe466-1cdc-4bd3-ab69-77c3561b9dee");
-        realm.setClientSecret("d8346ea2-6017-43ed-ad68-19c0f971738b");
-        realm.setRedirectUrl("http://localhost:8070/demo/oauth2-login");
-        realm.setUserInfoUrl("http://localhost:8070/demo/userInfo");
         realm.setCacheManager(redisCacheManager);
         //realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;

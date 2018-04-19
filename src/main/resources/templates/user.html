@@ -3,7 +3,10 @@
       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:include="header::header"></head>
 <body>
-<h1 th:text="#{welcome}"></h1>
+<h1 th:text="#{welcome}">
+    <shiro:principal/>
+    <span shiro:principal=""></span>
+</h1>
 <h1>用户列表--<a th:href="@{/logout}">退出登录</a></h1>
 <h2>权限列表</h2>
 <shiro:authenticated>用户已经登录显示此内容<br/></shiro:authenticated>

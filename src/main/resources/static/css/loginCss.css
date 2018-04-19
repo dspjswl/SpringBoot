@@ -132,3 +132,7 @@
     padding-right: 15px;
     padding-left: 0px;
 }
+
+img{
+    cursor:pointer;
+}
