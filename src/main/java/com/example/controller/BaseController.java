@@ -47,11 +47,18 @@ public class BaseController {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String path = request.getContextPath();
-        String scheme = request.getScheme();
+//        String scheme = request.getScheme();
+        // getScheme()取的是项目的scheme，由于该项目未绑定443端口，故scheme是http，改用以下语句可以取到转发方的scheme
+        // ,避免出现Mixed Content的错误
+        String scheme = request.getHeader("x-forwarded-proto");
         String serverName = request.getServerName();
         int port = request.getServerPort();
         //拼接上下文
-        String basePath = scheme + "://" + serverName + ":" + port + path;
+        String basePath = scheme + "://" + serverName;
+        if (!"https".equals(scheme)) {
+            basePath = basePath + ":" + port;
+        }
+        basePath = basePath + path;
         //basePath信息放入attribute中
         mav.addObject("basePath", basePath);
 //        request.setAttribute("basePath", basePath);
