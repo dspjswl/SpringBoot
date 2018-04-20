@@ -23,10 +23,10 @@ public class CommonInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
         String path = httpServletRequest.getContextPath();
-        String scheme = httpServletRequest.getScheme();
-        ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println("@@@@@@@@@@@@"+httpServletRequest.getHeader("x-forwarded-proto"));
-        System.out.println("@@@@@@@@@@@@"+objectMapper.writeValueAsString(httpServletRequest));
+//        String scheme = httpServletRequest.getScheme();
+        // getScheme()取的是项目的scheme，由于该项目未绑定443端口，故scheme是http，改用以下语句可以取到转发方的scheme
+        // ,避免出现Mixed Content的错误
+        String scheme = httpServletRequest.getHeader("x-forwarded-proto");
         String serverName = httpServletRequest.getServerName();
         int port = httpServletRequest.getServerPort();
         String basePath = scheme + "://" + serverName + ":" + port + path;
