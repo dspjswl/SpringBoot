@@ -29,7 +29,11 @@ public class CommonInterceptor implements HandlerInterceptor {
         String scheme = httpServletRequest.getHeader("x-forwarded-proto");
         String serverName = httpServletRequest.getServerName();
         int port = httpServletRequest.getServerPort();
-        String basePath = scheme + "://" + serverName + ":" + port + path;
+        String basePath = scheme + "://" + serverName;
+        if (!"https".equals(scheme)) {
+            basePath = basePath + ":" + port;
+        }
+        basePath = basePath + path;
         httpServletRequest.setAttribute("basePath", basePath);
 
         List<Map<String, String>> availableLocales = messageService.getAvailableLocales();
