@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.service.IMessageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +24,9 @@ public class CommonInterceptor implements HandlerInterceptor {
 
         String path = httpServletRequest.getContextPath();
         String scheme = httpServletRequest.getScheme();
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println("@@@@@@@@@@@@"+httpServletRequest.getHeader("x-forwarded-proto"));
+        System.out.println("@@@@@@@@@@@@"+objectMapper.writeValueAsString(httpServletRequest));
         String serverName = httpServletRequest.getServerName();
         int port = httpServletRequest.getServerPort();
         String basePath = scheme + "://" + serverName + ":" + port + path;
