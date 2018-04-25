@@ -1,0 +1,36 @@
+version: '3'
+services:
+  mysql:
+   container_name: mysql-server
+   image: mariadb
+   environment:
+    MYSQL_ROOT_PASSWORD: swlinyuheng3
+    MYSQL_ROOT_HOST: '%'
+   volumes:
+      - /mnt/docker/mariadb/my.cnf:/etc/mysql/my.cnf
+      - /var/lib/mysql:/var/lib/mysql
+   ports:
+   - "3306:3306"
+   restart: always
+
+  redis:
+   container_name: redis-server
+   image: redis
+   volumes:
+      - /etc/redis.conf:/etc/redis/redis.conf
+   ports:
+   - "6379:6379"
+   restart: always
+
+  app:
+    container_name: app_1
+    image: dspjswl/demo
+    restart: always
+    ports:
+    - "8080:8080"
+    depends_on:
+      - redis
+      - mysql
+    links:
+      - "redis"
+      - "mysql"
