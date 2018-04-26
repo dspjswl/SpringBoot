@@ -19,52 +19,52 @@ import java.util.Properties;
 @Configuration
 public class CaptchaConfig {
 
-    @Value("${kaptcha.border}")
+    @Value("${captcha.border}")
     private String border;
 
-    @Value("${kaptcha.border.color}")
+    @Value("${captcha.border.color}")
     private String borderColor;
 
-    @Value("${kaptcha.session.key}")
+    @Value("${captcha.session.key}")
     private String skey;
 
-    @Value("${kaptcha.textproducer.impl}")
+    @Value("${captcha.textproducer.impl}")
     private String tpImpl;
 
-    @Value("${kaptcha.textproducer.font.color}")
+    @Value("${captcha.textproducer.font.color}")
     private String fcolor;
 
-    @Value("${kaptcha.textproducer.font.size}")
+    @Value("${captcha.textproducer.font.size}")
     private String fsize;
 
-    @Value("kaptcha.textproducer.font.names")
+    @Value("captcha.textproducer.font.names")
     private String fnames;
 
-    @Value("${kaptcha.obscurificator.impl}")
+    @Value("${captcha.obscurificator.impl}")
     private String obscurificator;
 
-    @Value("${kaptcha.noise.impl}")
+    @Value("${captcha.noise.impl}")
     private String noise;
 
-    @Value("${kaptcha.image.width}")
+    @Value("${captcha.image.width}")
     private String width;
 
-    @Value("${kaptcha.image.height}")
+    @Value("${captcha.image.height}")
     private String height;
 
-    @Value("${kaptcha.textproducer.char.length}")
+    @Value("${captcha.textproducer.char.length}")
     private String clength;
 
-    @Value("${kaptcha.textproducer.char.space}")
+    @Value("${captcha.textproducer.char.space}")
     private String cspace;
 
-    @Value("${kaptcha.background.clear.from}")
+    @Value("${captcha.background.clear.from}")
     private String from;
 
-    @Value("${kaptcha.background.clear.to}")
+    @Value("${captcha.background.clear.to}")
     private String to;
 
-    @Value("${kaptcha.word.impl}")
+    @Value("${captcha.word.impl}")
     private String word;
 
 //    @Bean
