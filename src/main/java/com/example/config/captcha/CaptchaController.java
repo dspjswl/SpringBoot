@@ -50,11 +50,14 @@ public class CaptchaController {
         try {
             //获取验证码字符串
             String text = defaultKaptcha.createText();
+            String captchaKey;
             //获取验证码的key
-            String captchaKey = WebUtils.getCookie(request, CAPTCHA_KEY).getValue();
+            Cookie cookieCaptchaKey = WebUtils.getCookie(request, CAPTCHA_KEY);
             //若验证码的key为空，则根据UUID生成
-            if (captchaKey == null) {
+            if (cookieCaptchaKey == null) {
                 captchaKey = UUID.randomUUID().toString();
+            } else {
+                captchaKey = cookieCaptchaKey.getValue();
             }
             //验证码的key和验证码的值存入redis
             redisTemplate.opsForValue().set(captchaKey, text, captchaTimeOut, TimeUnit.SECONDS);
