@@ -28,7 +28,7 @@
                     <div id="form_captcha" class="col-md-8">
                         <input type="text" class="form-control" name="captcha" placeholder="输入右侧验证码">
                     </div>
-                    <img style="display:inline;" id="kaptcha" th:src="@{/images/kaptcha.jpg}" title="点击更换"
+                    <img style="display:inline;" id="kaptcha" th:src="@{/getCaptcha}" title="点击更换"
                          onclick="refreshCaptcha();"/>
                 </div>
                 <div class="form-group">
@@ -41,9 +41,9 @@
                 </div>
                 <hr/>
                 <div style="font-size: 15px">其它方式登录</div>
-                <img th:src="@{/images/favicon.ico}" th:width="50px" th:height="50px" onclick="linkDemoLogin();"/>
-                <img th:src="@{/images/bt_92X120.png}" th:width="50px" th:height="50px" style="margin-left: 10px" onclick="linkQQLogin();"/>
-                <img th:src="@{/images/GitHub-Mark-120px-plus.png}" th:width="50px" th:height="50px" style="margin-left: 10px" onclick="linkGithubLogin();"/>
+                <img id="demoLogin" th:src="@{/images/favicon.ico}" th:width="50px" th:height="50px" onclick="linkDemoLogin();"/>
+                <img id="qqLogin" th:src="@{/images/bt_92X120.png}" th:width="50px" th:height="50px" style="margin-left: 10px" onclick="linkQQLogin();"/>
+                <img id="githubLogin" th:src="@{/images/GitHub-Mark-120px-plus.png}" th:width="50px" th:height="50px" style="margin-left: 10px" onclick="linkGithubLogin();"/>
             </form>
         </div>
     </div>

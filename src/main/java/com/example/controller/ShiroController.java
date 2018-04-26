@@ -117,7 +117,9 @@ public class ShiroController {
             // 定义的usernamePasswordToken还有哪里未设置到导致shiro内部的某个
             // 地方的校验一直在使用原生的usernamePasswordToken，现解决办法是在
             // 第一次校验的使用先使当前的用户登出
-            currentUser.logout();
+//            if (currentUser.isAuthenticated()) {
+//                currentUser.logout();
+//            }
             return "redirect:/login";
         } else {
             return "redirect:/user";

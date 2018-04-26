@@ -6,6 +6,13 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -19,7 +26,16 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomFormAuthenticationFilter  extends FormAuthenticationFilter {
     private static final Logger LOG = LoggerFactory.getLogger(CustomFormAuthenticationFilter.class);
 
-    public CustomFormAuthenticationFilter() {
+    public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
+
+    public static final String CAPTCHA_KEY = "captchaKey";
+
+    private String captchaParam = DEFAULT_CAPTCHA_PARAM;
+
+    private RedisTemplate<String, String> redisTemplate;
+
+    public CustomFormAuthenticationFilter(RedisTemplate<String, String> redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
     @Override
     /**
@@ -30,9 +46,9 @@ public class CustomFormAuthenticationFilter  extends FormAuthenticationFilter {
         CustomUsernamePasswordToken token = createToken(request, response);
         try {
             Subject subject = getSubject(request, response);
-            subject.login(token);//正常验证
             /*图形验证码验证*/
             doCaptchaValidate((HttpServletRequest) request, token);
+            subject.login(token);//正常验证
             LOG.info(token.getUsername()+"登录成功");
             return onLoginSuccess(token, subject, request, response);
         }catch (AuthenticationException e) {
@@ -44,12 +60,15 @@ public class CustomFormAuthenticationFilter  extends FormAuthenticationFilter {
     // 验证码校验
     protected void doCaptchaValidate(HttpServletRequest request,
                                      CustomUsernamePasswordToken token) {
-//session中的图形码字符串
-        String captcha = (String) request.getSession().getAttribute(
-                com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-//比对
-        if (captcha != null && !captcha.equalsIgnoreCase(token.getCaptcha())) {
-            throw new CaptchaNotMatchException("验证码错误！");
+        //session中的图形码字符串
+//        String captcha = (String) request.getSession().getAttribute(
+//                com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        //从redis中获取验证码值
+        String redisCaptcha = redisTemplate.opsForValue().get(token.getCaptchaKey());
+        //清除redis中该验证码信息
+        redisTemplate.delete("CAPTCHA_KEY");
+        if (redisCaptcha == null || redisCaptcha != null && !redisCaptcha.equalsIgnoreCase(token.getCaptcha())) {
+            throw new CaptchaNotMatchException("验证码错误或过期！");
         }
     }
 
@@ -59,16 +78,13 @@ public class CustomFormAuthenticationFilter  extends FormAuthenticationFilter {
         String username = getUsername(request);
         String password = getPassword(request);
         String captcha = getCaptcha(request);
+        String captchaKey = getCaptchaKey(request);
         boolean rememberMe = isRememberMe(request);
         String host = getHost(request);
 
         return new CustomUsernamePasswordToken(username,
-                password.toCharArray(), rememberMe, host, captcha);
+                password.toCharArray(), rememberMe, host, captcha, captchaKey);
     }
-
-    public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
-
-    private String captchaParam = DEFAULT_CAPTCHA_PARAM;
 
     public String getCaptchaParam() {
         return captchaParam;
@@ -80,6 +96,10 @@ public class CustomFormAuthenticationFilter  extends FormAuthenticationFilter {
 
     protected String getCaptcha(ServletRequest request) {
         return WebUtils.getCleanParam(request, getCaptchaParam());
+    }
+
+    private String getCaptchaKey(ServletRequest request) {
+        return org.springframework.web.util.WebUtils.getCookie((HttpServletRequest) request, CAPTCHA_KEY).getValue();
     }
 
     //保存异常对象到request

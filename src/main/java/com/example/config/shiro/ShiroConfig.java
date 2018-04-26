@@ -27,6 +27,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.Filter;
@@ -71,6 +72,7 @@ public class ShiroConfig {
 //        em.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
 //        return em;
 //    }
+
     @Bean
     public RedisManager getRedisManager(ShiroRedisConfigInfo shiroRedisConfigInfo) {
         RedisManager redisManager = new RedisManager();
@@ -134,6 +136,10 @@ public class ShiroConfig {
         CustomModularRealmAuthenticator authenticator = new CustomModularRealmAuthenticator();
         authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
         return authenticator;
+    }
+
+    public CustomFormAuthenticationFilter getCustomFormAuthenticationFilter(RedisTemplate<String, String> redisTemplate) {
+        return new CustomFormAuthenticationFilter(redisTemplate);
     }
 
     @Bean(name = "oAuth2AuthenticationFilter")
@@ -265,11 +271,11 @@ public class ShiroConfig {
      * @create  2016年1月14日
      */
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, FilterRuleMapper filterRuleMapper) {
+    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, FilterRuleMapper filterRuleMapper, RedisTemplate<String, String> redisTemplate) {
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();//获取filters
-        filters.put("authc", new CustomFormAuthenticationFilter()); //将自定义的CustomFormAuthenticationFilter放入
+        filters.put("authc", getCustomFormAuthenticationFilter(redisTemplate)); //将自定义的CustomFormAuthenticationFilter放入
         filters.put("oauth2Authc", oAuth2AuthenticationFilter());
 //        filters.put("logout", getCustomLogoutFilter());
         // 必须设置 SecurityManager

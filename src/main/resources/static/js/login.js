@@ -17,5 +17,5 @@ function linkGithubLogin() {
 }
 
 function refreshCaptcha() {
-    $("#kaptcha").attr("src", "images/kaptcha.jpg?t=" + Math.random());
+    $("#kaptcha").attr("src", _basePath+"/getCaptcha?t=" + Math.random());
 }

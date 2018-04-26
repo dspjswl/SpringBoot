@@ -50,7 +50,7 @@ public class BaseController {
 //        String scheme = request.getScheme();
         // getScheme()取的是项目的scheme，由于该项目未绑定443端口，故scheme是http，改用以下语句可以取到转发方的scheme
         // ,避免出现Mixed Content的错误
-        String scheme = request.getHeader("x-forwarded-proto");
+        String scheme = request.getHeader("x-forwarded-proto") == null ? "http" : request.getHeader("x-forwarded-proto");
         String serverName = request.getServerName();
         int port = request.getServerPort();
         //拼接上下文
