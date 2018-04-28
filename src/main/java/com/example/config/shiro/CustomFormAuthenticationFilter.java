@@ -1,6 +1,11 @@
 package com.example.config.shiro;
 
+import com.example.dto.SysUser;
+import com.example.dto.UserInfo;
+import com.example.mapper.UserMapper;
+import com.example.util.RedisTemplateUtil;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -32,10 +37,15 @@ public class CustomFormAuthenticationFilter  extends FormAuthenticationFilter {
 
     private String captchaParam = DEFAULT_CAPTCHA_PARAM;
 
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplateUtil redisTemplateUtil;
 
-    public CustomFormAuthenticationFilter(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    private static int TTL = 60 * 60;
+
+    private UserMapper userMapper;
+
+    public CustomFormAuthenticationFilter(RedisTemplateUtil redisTemplateUtil, UserMapper userMapper) {
+        this.redisTemplateUtil = redisTemplateUtil;
+        this.userMapper = userMapper;
     }
     @Override
     /**
@@ -64,9 +74,9 @@ public class CustomFormAuthenticationFilter  extends FormAuthenticationFilter {
 //        String captcha = (String) request.getSession().getAttribute(
 //                com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
         //从redis中获取验证码值
-        String redisCaptcha = redisTemplate.opsForValue().get(token.getCaptchaKey());
+        String redisCaptcha = redisTemplateUtil.get(token.getCaptchaKey());
         //清除redis中该验证码信息
-        redisTemplate.delete("CAPTCHA_KEY");
+        redisTemplateUtil.remove("CAPTCHA_KEY");
         if (redisCaptcha == null || redisCaptcha != null && !redisCaptcha.equalsIgnoreCase(token.getCaptcha())) {
             throw new CaptchaNotMatchException("验证码错误或过期！");
         }
@@ -107,5 +117,18 @@ public class CustomFormAuthenticationFilter  extends FormAuthenticationFilter {
     protected void setFailureAttribute(ServletRequest request,
                                        AuthenticationException ae) {
         request.setAttribute(getFailureKeyAttribute(), ae);
+    }
+
+    //重写登录成功重定向方法
+    @Override
+    protected boolean onLoginSuccess(AuthenticationToken token, Subject subject,
+            ServletRequest request, ServletResponse response) throws Exception {
+        SysUser sysUser = userMapper.findUserByName(getUsername(request));
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(sysUser.getUsername());
+        redisTemplateUtil.set(userInfo.getUsername(),userInfo,TTL);
+        issueSuccessRedirect(request, response);
+        //we handled the success redirect directly, prevent the chain from continuing:
+        return false;
     }
 }

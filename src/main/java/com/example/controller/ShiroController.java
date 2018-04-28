@@ -61,7 +61,7 @@ public class ShiroController {
         //验证是否登录成功
         if(currentUser.isAuthenticated()){
             logger.error("用户{}已经登录",currentUser.getPrincipal().toString());
-            return "redirect:/user";
+            return "redirect:/";
         }
         model.addAttribute("user", new SysUser());
         return "login";
@@ -122,7 +122,7 @@ public class ShiroController {
 //            }
             return "redirect:/login";
         } else {
-            return "redirect:/user";
+            return "redirect:/";
         }
     }
 

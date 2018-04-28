@@ -126,13 +126,16 @@
     }
 }
 /*重写padding-left的属性*/
-#form_captcha.col-md-8{
+#form_captcha.col-md-6{
     position: relative;
     min-height: 1px;
     padding-right: 15px;
     padding-left: 0px;
 }
-
+.form-control-inline {
+    width:200px;
+    display:inline;
+}
 img{
     cursor:pointer;
 }

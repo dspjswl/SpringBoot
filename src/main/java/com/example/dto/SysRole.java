@@ -57,7 +57,7 @@ public class SysRole implements Serializable {
     }
 
     @Transient
-    public List<String> getPermissionsName() {
+    public List<String> addPermissionsName() {
         List<String> list = new ArrayList<String>();
         List<SysPermission> perlist = getPermissionList();
         for (SysPermission per : perlist) {

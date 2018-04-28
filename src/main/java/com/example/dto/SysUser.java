@@ -22,6 +22,7 @@ public class SysUser {
     private String username;
     @NotEmpty(message = "密码不能为空")
     private String password;
+
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "sys_user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id") })
@@ -70,11 +71,13 @@ public class SysUser {
     }
 
     @Transient
-    public Set<String> getRolesName() {
+    public Set<String> addRolesName() {
         List<SysRole> roles = getRoleList();
         Set<String> set = new HashSet<String>();
-        for (SysRole role : roles) {
-            set.add(role.getRoleName());
+        if (roles != null) {
+            for (SysRole role : roles) {
+                set.add(role.getRoleName());
+            }
         }
         return set;
     }

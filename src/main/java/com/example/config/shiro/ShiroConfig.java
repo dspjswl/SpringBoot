@@ -6,6 +6,8 @@ import com.example.config.oauth.OAuth2AuthenticationFilter;
 import com.example.config.oauth.OAuth2Realm;
 import com.example.dto.FilterRule;
 import com.example.mapper.FilterRuleMapper;
+import com.example.mapper.UserMapper;
+import com.example.util.RedisTemplateUtil;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.realm.Realm;
@@ -28,6 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.Filter;
@@ -124,8 +127,9 @@ public class ShiroConfig {
     }
 
     @Bean(name = "oAuth2Realm")
-    public OAuth2Realm oAuth2Realm(RedisCacheManager redisCacheManager) {
+    public OAuth2Realm oAuth2Realm(RedisCacheManager redisCacheManager, RedisTemplateUtil redisTemplateUtil) {
         OAuth2Realm realm = new OAuth2Realm();
+        realm.setRedisTemplateUtil(redisTemplateUtil);
         realm.setCacheManager(redisCacheManager);
         //realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
@@ -138,8 +142,8 @@ public class ShiroConfig {
         return authenticator;
     }
 
-    public CustomFormAuthenticationFilter getCustomFormAuthenticationFilter(RedisTemplate<String, String> redisTemplate) {
-        return new CustomFormAuthenticationFilter(redisTemplate);
+    public CustomFormAuthenticationFilter getCustomFormAuthenticationFilter(RedisTemplateUtil redisTemplateUtil, UserMapper userMapper) {
+        return new CustomFormAuthenticationFilter(redisTemplateUtil, userMapper);
     }
 
     @Bean(name = "oAuth2AuthenticationFilter")
@@ -271,11 +275,11 @@ public class ShiroConfig {
      * @create  2016年1月14日
      */
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, FilterRuleMapper filterRuleMapper, RedisTemplate<String, String> redisTemplate) {
+    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager, FilterRuleMapper filterRuleMapper, RedisTemplateUtil redisTemplateUtil, UserMapper userMapper) {
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();//获取filters
-        filters.put("authc", getCustomFormAuthenticationFilter(redisTemplate)); //将自定义的CustomFormAuthenticationFilter放入
+        filters.put("authc", getCustomFormAuthenticationFilter(redisTemplateUtil, userMapper)); //将自定义的CustomFormAuthenticationFilter放入
         filters.put("oauth2Authc", oAuth2AuthenticationFilter());
 //        filters.put("logout", getCustomLogoutFilter());
         // 必须设置 SecurityManager
@@ -283,7 +287,7 @@ public class ShiroConfig {
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 登录成功后要跳转的连接
-        shiroFilterFactoryBean.setSuccessUrl("/user");
+        shiroFilterFactoryBean.setSuccessUrl("/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/error/unauthorized");
 
 

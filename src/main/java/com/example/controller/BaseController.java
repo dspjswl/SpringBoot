@@ -61,6 +61,7 @@ public class BaseController {
         basePath = basePath + path;
         //basePath信息放入attribute中
         mav.addObject("basePath", basePath);
+
 //        request.setAttribute("basePath", basePath);
         //貌似入参中的mav的viewName为null时会返回原来访问的html，所以可以不用下面的setViewName
         //String requestURI = request.getRequestURI();

@@ -1,7 +1,13 @@
 package com.example.controller;
 
 import com.example.constants.Constants;
+import com.example.dto.SysUser;
+import com.example.dto.UserInfo;
 import com.example.service.IOAuthService;
+import com.example.util.RedisTemplateUtil;
+import org.apache.oltu.oauth2.client.request.OAuthBearerClientRequest;
+import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.OAuthResourceResponse;
 import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
@@ -11,13 +17,18 @@ import org.apache.oltu.oauth2.common.message.types.ParameterStyle;
 import org.apache.oltu.oauth2.common.utils.OAuthUtils;
 import org.apache.oltu.oauth2.rs.request.OAuthAccessResourceRequest;
 import org.apache.oltu.oauth2.rs.response.OAuthRSResponse;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +42,13 @@ import javax.servlet.http.HttpServletResponse;
 public class ResourceController {
     @Autowired
     private IOAuthService oAuthService;
+
+    @Value("shiro.realm.demo.userInfoUrl")
+    private String USER_INFO_URL;
+
+    @Autowired
+    private RedisTemplateUtil redisTemplateUtil;
+
     @RequestMapping("/userInfo")
     public HttpEntity userInfo(HttpServletRequest request) throws OAuthSystemException {
         try {
@@ -80,5 +98,11 @@ public class ResourceController {
                     oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE));
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping("/userInfo/get")
+    public UserInfo getUserInfo(HttpServletRequest request) throws OAuthSystemException {
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        return redisTemplateUtil.getObject(username);
     }
 }

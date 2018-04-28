@@ -1,6 +1,9 @@
 package com.example.config.oauth;
 
 import com.example.config.oauth.github.GithubData;
+import com.example.dto.SysUser;
+import com.example.dto.UserInfo;
+import com.example.util.RedisTemplateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
@@ -18,8 +21,10 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * OAuth2Realm.
@@ -38,6 +43,10 @@ public class OAuth2Realm extends AuthorizingRealm {
     private String accessTokenUrl;
     private String userInfoUrl;
     private String redirectUrl;
+
+    private RedisTemplateUtil redisTemplateUtil;
+
+    private static int TTL = 60 * 60;
 
     public String getClientId() {
         return clientId;
@@ -87,7 +96,13 @@ public class OAuth2Realm extends AuthorizingRealm {
         this.loginObject = loginObject;
     }
 
-    //省略setter。
+    public RedisTemplateUtil getRedisTemplateUtil() {
+        return redisTemplateUtil;
+    }
+
+    public void setRedisTemplateUtil(RedisTemplateUtil redisTemplateUtil) {
+        this.redisTemplateUtil = redisTemplateUtil;
+    }
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -135,24 +150,29 @@ public class OAuth2Realm extends AuthorizingRealm {
                     .setAccessToken(accessToken).buildQueryMessage();
 
             OAuthResourceResponse resourceResponse = oAuthClient.resource(userInfoRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
-            String username = handleBody(resourceResponse.getBody());
-            log.debug("-----username为:{}", username);
-            return username;
+            UserInfo userInfo = handleBody(resourceResponse.getBody());
+            redisTemplateUtil.set(userInfo.getUsername(),userInfo,TTL);
+            log.debug("-----username为:{}", userInfo.getUsername());
+            return userInfo.getUsername();
         } catch (Exception e) {
             e.printStackTrace();
             throw new OAuth2AuthenticationException(e);
         }
     }
 
-    private String handleBody(String body) throws IOException {
+    private UserInfo handleBody(String body) throws IOException {
+        UserInfo userInfo = new UserInfo();
         switch (loginObject) {
         case "DEMO":
-            return body;
+            userInfo.setUsername(body);
+            return userInfo;
         case "GITHUB":
             GithubData githubData = objectMapper.readValue(body, GithubData.class);
-            return githubData.getLogin();
+            userInfo.setUsername(githubData.getLogin());
+            userInfo.setImageUrl(githubData.getAvatar_url());
+            return userInfo;
         default:
-            return body;
+            return userInfo;
         }
     }
 }

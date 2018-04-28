@@ -1,6 +1,7 @@
 package com.example.config.redis;
 
 
+import com.example.util.RedisTemplateUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +35,7 @@ import java.lang.reflect.Method;
 //@EnableCaching//启用缓存，这个注解很重要；
 public class RedisCacheConfig extends CachingConfigurerSupport {
 
+    private static String REDIS_NAME_SPACE = "dspjswl";
 
     /**
      * 缓存管理器.
@@ -61,25 +63,62 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
      * @param factory : 通过Spring进行注入，参数在application.properties进行配置；
      * @return
      */
+//    @Bean
+//    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+//        StringRedisTemplate redisTemplate = new StringRedisTemplate(factory);
+//        //key序列化方式,但是如果方法上有Long等非String类型的话，会报类型转换错误
+//        //所以在没有自己定义key生成策略的时候，以下这个代码建议不要这么写，可以不配置或者自己实现ObjectRedisSerializer
+//        RedisSerializer<String> redisSerializer = new StringRedisSerializer();//Long类型不可以会出现异常信息;
+//        redisTemplate.setKeySerializer(redisSerializer);
+////        redisTemplate.setHashKeySerializer(redisSerializer);
+////        redisTemplate.setValueSerializer(redisSerializer);
+//        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+//        ObjectMapper om = new ObjectMapper();
+//        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+//        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//        jackson2JsonRedisSerializer.setObjectMapper(om);
+//
+//        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+//        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+//        redisTemplate.afterPropertiesSet();
+//        return redisTemplate;
+//    }
+
     @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
-        StringRedisTemplate redisTemplate = new StringRedisTemplate(factory);
-        //key序列化方式,但是如果方法上有Long等非String类型的话，会报类型转换错误
-        //所以在没有自己定义key生成策略的时候，以下这个代码建议不要这么写，可以不配置或者自己实现ObjectRedisSerializer
-        RedisSerializer<String> redisSerializer = new StringRedisSerializer();//Long类型不可以会出现异常信息;
-        redisTemplate.setKeySerializer(redisSerializer);
-//        redisTemplate.setHashKeySerializer(redisSerializer);
-//        redisTemplate.setValueSerializer(redisSerializer);
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
+        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setKeySerializer(stringSerializer);
+        template.afterPropertiesSet();
+        return template;
+    }
 
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
+    @Bean
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory factory) {
+        StringRedisTemplate template = new StringRedisTemplate(factory);
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+        template.setKeySerializer(stringSerializer);
+        template.setValueSerializer(stringSerializer);
+        template.setHashKeySerializer(stringSerializer);
+        template.setKeySerializer(stringSerializer);
+        template.afterPropertiesSet();
+        return template;
+    }
+
+    @Bean
+    public RedisTemplateUtil redisUtil(RedisTemplate<String, Object> redisTemplate, StringRedisTemplate stringRedisTemplate) {
+        RedisTemplateUtil redisUtil = new RedisTemplateUtil();
+        redisUtil.setRedisTemplate(redisTemplate);
+        redisUtil.setStringRedisTemplate(stringRedisTemplate);
+        redisUtil.setNamespace(REDIS_NAME_SPACE);
+        return redisUtil;
     }
 
     /**

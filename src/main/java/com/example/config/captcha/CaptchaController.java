@@ -1,6 +1,7 @@
 package com.example.config.captcha;
 
 import com.example.util.CaptchaUtil;
+import com.example.util.RedisTemplateUtil;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CaptchaController {
     public static final String CAPTCHA_KEY = "captchaKey";
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplateUtil redisTemplateUtil;
     @Autowired
     private DefaultKaptcha defaultKaptcha;
     @Autowired
@@ -63,7 +64,7 @@ public class CaptchaController {
                 captchaKey = cookieCaptchaKey.getValue();
             }
             //验证码的key和验证码的值存入redis
-            redisTemplate.opsForValue().set(captchaKey, text, captchaTimeOut, TimeUnit.SECONDS);
+            redisTemplateUtil.set(captchaKey, text, captchaTimeOut);
             //将key存储到本地cookie中
             Cookie cookie = new Cookie(CAPTCHA_KEY, captchaKey);
             response.addCookie(cookie);
@@ -109,7 +110,7 @@ public class CaptchaController {
                 captchaKey = cookieCaptchaKey.getValue();
             }
             //验证码的key和验证码的值存入redis
-            redisTemplate.opsForValue().set(captchaKey, text, captchaTimeOut, TimeUnit.SECONDS);
+            redisTemplateUtil.set(captchaKey, text, captchaTimeOut);
             //将key存储到本地cookie中
             Cookie cookie = new Cookie(CAPTCHA_KEY, captchaKey);
             response.addCookie(cookie);
