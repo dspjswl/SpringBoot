@@ -71,14 +71,17 @@ public class OAuth2AuthenticationFilter extends AuthenticatingFilter {
         this.failureUrl = failureUrl;
     }
 
+    @Override
     protected OAuth2Token createToken(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String code = httpRequest.getParameter(authcCodeParam);
         return new OAuth2Token(code);
     }
+    @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         return false;
     }
+    @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         String error = request.getParameter("error");
         String errorDescription = request.getParameter("error_description");
@@ -99,12 +102,14 @@ public class OAuth2AuthenticationFilter extends AuthenticatingFilter {
     }
 
     //登录成功后的回调方法 重定向到成功页面
+    @Override
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,  ServletResponse response) throws Exception {
         issueSuccessRedirect(request, response);
         return false;
     }
 
     //登录失败后的回调
+    @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException ae, ServletRequest request,
             ServletResponse response) {
         Subject subject = getSubject(request, response);

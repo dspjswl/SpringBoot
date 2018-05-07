@@ -89,8 +89,9 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
             int idx = 0;
             if(( idx = str.indexOf(".")) > 0){
                 str = str.substring(idx);
-                if(ignoreExt.contains(str.toLowerCase()))
+                if(ignoreExt.contains(str.toLowerCase())) {
                     flag = false;
+                }
             }
             if(flag){
                 super.doFilterInternal(servletRequest, servletResponse, chain);

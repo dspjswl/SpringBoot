@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 
-<head th:include="header::header">
+<head th:include="header::header" th:with="p_title='登录'">
 </head>
 
 
@@ -16,8 +16,6 @@
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<!-- Fav and touch icons -->
-<link rel="shortcut icon" href="assets/ico/minus.png">
 
 <link th:href="@{/css/loginCss.css}" rel="stylesheet" type="text/css"/>
 <script th:src="@{/js/login.js}"></script>
@@ -45,19 +43,22 @@
 
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
-                    <div class="account-box"> 
+                    <div class="account-box">
+                        <div class="alert-error" th:if="${!#strings.isEmpty(message)}">
+                            <span th:text="${message}"/>
+                        </div>
                         <form role="form" style="text-align:center" th:action="@{/login}" method="post">
                             <div class="form-group">
                                 <!--a href="#" class="pull-right label-forgot">Forgot email?</a-->
-                                <input type="text" name="username" class="form-control" placeholder="用户名">
+                                <input type="text" name="username" class="form-control" placeholder="用户名" th:value="${username}" required="required">
                             </div>
                             <div class="form-group">
                                 <!--a href="#" class="pull-right label-forgot">Forgot password?</a-->
-                                <input type="password" name="password" class="form-control" placeholder="密码">
+                                <input type="password" name="password" class="form-control" placeholder="密码" required="required">
                             </div>
                             <div class="form-group">
                                 <div id="form_captcha" class="col-md-6">
-                                    <input type="text" class="form-control" name="captcha" placeholder="输入右侧验证码">
+                                    <input type="text" class="form-control" name="captcha" placeholder="输入右侧验证码" required="required">
                                 </div>
                                 <img id="kaptcha" th:src="@{/getCaptcha2}" title="点击更换"
                                      onclick="refreshCaptcha();"/>

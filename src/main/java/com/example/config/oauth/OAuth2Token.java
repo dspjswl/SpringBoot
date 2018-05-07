@@ -25,6 +25,7 @@ public class OAuth2Token implements AuthenticationToken {
         this.authCode = authCode;
     }
 
+    @Override
     public String getPrincipal() {
         return principal;
     }

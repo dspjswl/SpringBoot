@@ -108,6 +108,7 @@ public class ShiroController {
                     logger.info("对用户[" + username + "]进行登录验证..验证未通过,验证码不匹配");
                     redirectAttributes.addFlashAttribute("message", "验证码错误");
                 }
+                redirectAttributes.addFlashAttribute("username", username);
             }
             //当第一次登录时填入正确的账户和密码，填个错误的验证码后提交时，
             // 第一次会重定向回login，但第二次登入时无论输入的信息正确与否，

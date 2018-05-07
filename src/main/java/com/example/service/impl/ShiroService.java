@@ -47,7 +47,7 @@ public class ShiroService implements IShiroService {
             // 清空老的权限控制
             manager.getFilterChains().clear();
             shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();
-            shiroConfig.loadShiroFilterChain(shiroFilterFactoryBean, filterRuleMapper);
+            ShiroConfig.loadShiroFilterChain(shiroFilterFactoryBean, filterRuleMapper);
             // 重新构建生成
             Map<String, String> chains = shiroFilterFactoryBean
                     .getFilterChainDefinitionMap();

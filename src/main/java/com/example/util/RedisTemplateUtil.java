@@ -27,8 +27,9 @@ public class RedisTemplateUtil {
     }
 
     public void setNamespace(String namespace) {
-        if (namespace != null)
+        if (namespace != null) {
             this.namespace = namespace + ":";
+        }
     }
 
     public void set(String k, Object v, long time) {
@@ -38,7 +39,9 @@ public class RedisTemplateUtil {
         } else {
             redisTemplate.opsForValue().set(key, v);
         }
-        if (time > 0) redisTemplate.expire(key, time, TimeUnit.SECONDS);
+        if (time > 0) {
+            redisTemplate.expire(key, time, TimeUnit.SECONDS);
+        }
     }
 
     public void set(String k, Object v) {

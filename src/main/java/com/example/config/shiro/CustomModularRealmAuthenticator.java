@@ -36,15 +36,18 @@ public class CustomModularRealmAuthenticator extends ModularRealmAuthenticator {
             // 登录类型对应的所有Realm
             Collection<Realm> typeRealms = new ArrayList<>();
             for (Realm realm : realms) {
-                if (realm.getName().contains(loginType))
+                if (realm.getName().contains(loginType)) {
                     typeRealms.add(realm);
+                }
             }
 
             // 判断是单Realm还是多Realm
-            if (typeRealms.size() == 1)
+            if (typeRealms.size() == 1) {
                 return doSingleRealmAuthentication(typeRealms.iterator().next(), token);
-            else
+            }
+            else {
                 return doMultiRealmAuthentication(typeRealms, token);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
