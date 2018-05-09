@@ -72,7 +72,7 @@ public class TestController {
 
     @RequestMapping(value = "/register",method = RequestMethod.GET)
     public ModelAndView addUser() {
-        return new ModelAndView("/register");
+        return new ModelAndView("register");
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
