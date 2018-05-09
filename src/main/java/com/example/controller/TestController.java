@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * Created by yuheng.lin on 2017/4/28.
  */
-@RestController
+@Controller
 @EnableAutoConfiguration
 public class TestController {
 
@@ -42,6 +43,7 @@ public class TestController {
     @Autowired
     private IMessageService messageService;
 
+    @ResponseBody
     @RequestMapping("/test")
     public HashMap<String, Object> index() {
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -50,11 +52,13 @@ public class TestController {
         return map;
     }
 
+    @ResponseBody
     @RequestMapping("/testMapper")
     public String testMapper(@RequestParam Long id) {
         return testService.selectMemberCodeById(id);
     }
 
+    @ResponseBody
     @RequestMapping("/testMapper2")
     public Member testMapper2(@RequestParam Long id) {
         Member member = new Member();
@@ -62,6 +66,7 @@ public class TestController {
         return testService.selectByPrimaryKey(member);
     }
 
+    @ResponseBody
     @RequestMapping("/testMapper3")
     public List<Member> testMapper3() {
         if(logger.isDebugEnabled()){
@@ -71,10 +76,11 @@ public class TestController {
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.GET)
-    public ModelAndView addUser() {
-        return new ModelAndView("register");
+    public String addUser() {
+        return "register";
     }
 
+    @ResponseBody
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public ModelAndView register(@Valid SysUser user, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception {
         ModelAndView mav = new ModelAndView();
@@ -102,6 +108,7 @@ public class TestController {
 
     @Autowired
     private DiscoveryClient client;
+    @ResponseBody
     @RequestMapping(value = "/add" ,method = RequestMethod.GET)
     public Integer add(@RequestParam Integer a, @RequestParam Integer b) {
         ServiceInstance instance = client.getLocalServiceInstance();
@@ -110,6 +117,7 @@ public class TestController {
         return r;
     }
 
+    @ResponseBody
     @RequestMapping("/discovery")
     public String doDiscoveryService(){
         StringBuilder buf = new StringBuilder();
