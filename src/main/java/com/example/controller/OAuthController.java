@@ -31,7 +31,6 @@ public class OAuthController {
     @Autowired
     private RealmInfoHandler realmInfoHandler;
 
-    @Autowired
     OAuthController(DefaultWebSecurityManager dwsm){
         this.dwsm = dwsm;
         Collection<Realm> realms = dwsm.getRealms();
