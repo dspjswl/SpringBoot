@@ -18,17 +18,16 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.3.RELEASE</version>
+        <version>2.0.0.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
         <!-- set thymeleaf version -->
-        <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
+        <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
         <thymeleaf-layout-dialect.version>2.0.4</thymeleaf-layout-dialect.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- set thymeleaf version -->
         <java.version>1.8</java.version>
         <!--<docker.repostory>registry.cn-shenzhen.aliyuncs.com</docker.repostory>-->
         <!--<docker.registry.name>viiso</docker.registry.name>-->
@@ -102,7 +101,7 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.1.0</version>
+            <version>1.2.5</version>
         </dependency>
         <!--amqp-->
         <dependency>
@@ -123,8 +122,19 @@
         <!-- 添加redis支持-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-redis</artifactId>
-            <version>1.4.6.RELEASE</version>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--spring2.0集成redis所需common-pool2-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <!-- 将作为Redis对象序列化器 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.session</groupId>
@@ -221,6 +231,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
+        <!--版本迁移用-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
     </dependencies>
 
     <!--依赖管理，用于管理spring-cloud的依赖-->
@@ -229,7 +245,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Dalston.RELEASE</version>
+                <version>Finchley.RC1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

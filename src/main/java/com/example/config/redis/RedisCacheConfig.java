@@ -37,17 +37,25 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
 
     private static String REDIS_NAME_SPACE = "dspjswl";
 
+    // Spring boot 1.0使用
+//    @Bean
+//    public CacheManager getCacheManager(RedisTemplate<?, ?> redisTemplate) {
+//        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+//        cacheManager.setDefaultExpiration(10);
+//        return cacheManager;
+//    }
+
     /**
      * 缓存管理器.
      *
-     * @param redisTemplate
      * @return
      */
     @Bean
-    public CacheManager getCacheManager(RedisTemplate<?, ?> redisTemplate) {
-        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
-        cacheManager.setDefaultExpiration(10);
-        return cacheManager;
+    public CacheManager cacheManager(RedisConnectionFactory factory) {
+        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager
+                .RedisCacheManagerBuilder
+                .fromConnectionFactory(factory);
+        return builder.build();
     }
 
 

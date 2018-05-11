@@ -3,9 +3,7 @@ package com.example.config.captcha;
 import com.example.util.CaptchaUtil;
 import com.example.util.RedisTemplateUtil;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,14 +12,12 @@ import org.springframework.web.util.WebUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zhangmy on 2017/8/9.
