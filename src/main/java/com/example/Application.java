@@ -4,22 +4,25 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-//@EnableDiscoveryClient
 @ImportResource({ "classpath:applicationContext.xml"})
 @SpringBootApplication
 @MapperScan(basePackages = "com.example.mapper")
 @ServletComponentScan
 @EnableTransactionManagement
-//@EnableDiscoveryClient
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+@EnableFeignClients
 public class Application {
 
 	public static void main(String[] args) {
